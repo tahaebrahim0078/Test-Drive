@@ -114,7 +114,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 pt-8">
           <p className="text-gray-400 text-sm text-center">
-            © 2024 DriveTest. All rights reserved.
+            © 2025 DriveTest. All rights reserved.
           </p>
         </div>
       </div>

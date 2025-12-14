@@ -3,12 +3,12 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CarCard from "@/components/CarCard";
-import useHasMounted from "@/hooks/useHasMounted";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import ClientMotion from "@/components/ClientMotion";
 import { FiSearch, FiCalendar, FiCheck, FiStar } from "react-icons/fi";
-
+import Image from "next/image";
+import homepageImg from "../../public/images/HomeImage.jpeg";
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -34,7 +34,7 @@ const featuredCars = [
     category: "Luxury Sedan",
     price: 150,
     image:
-      "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=400&h=300&fit=crop",
+      "https://images.unsplash.com/photo-1734554381974-56e06a32453c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGJtdyUyMDMlMjBzZXJpZXN8ZW58MHx8MHx8fDA%3D",
   },
   {
     id: "2",
@@ -42,7 +42,7 @@ const featuredCars = [
     category: "Luxury Sedan",
     price: 160,
     image:
-      "https://images.unsplash.com/photo-1651362351519-f8e5e055f5f5?w=400&h=300&fit=crop",
+      "https://images.unsplash.com/photo-1660107930689-fc8a8fb9d007?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fG1lcmNlZGVzJTIwYyUyMGNsYXNzfGVufDB8fDB8fHww",
   },
   {
     id: "3",
@@ -50,7 +50,7 @@ const featuredCars = [
     category: "Luxury SUV",
     price: 170,
     image:
-      "https://images.unsplash.com/photo-1606559405297-5ce89cacb054?w=400&h=300&fit=crop",
+      "https://images.unsplash.com/photo-1632081831947-24ffdea2cd04?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8YXVkaSUyMHE1fGVufDB8fDB8fHww",
   },
   {
     id: "4",
@@ -58,7 +58,7 @@ const featuredCars = [
     category: "Electric Luxury",
     price: 180,
     image:
-      "https://images.unsplash.com/photo-1560958089-b8a46dd52956?w=400&h=300&fit=crop",
+      "https://images.unsplash.com/photo-1676945009341-4bb62b036653?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8dGVzbGElMjBtb2RlbCUyMHN8ZW58MHx8MHx8fDA%3D",
   },
 ];
 
@@ -98,7 +98,6 @@ const partners = [
 ];
 
 export default function Home() {
-  const hasMounted = useHasMounted();
   return (
     <main>
       <Navbar />
@@ -109,8 +108,8 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <ClientMotion
-              initial={hasMounted ? { opacity: 0, x: -50 } : false}
-              animate={hasMounted ? { opacity: 1, x: 0 } : undefined}
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
               <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
@@ -123,7 +122,7 @@ export default function Home() {
                 instantly.
               </p>
 
-              {/* Stats */}
+              {/* Statistics */}
               <div className="grid grid-cols-3 gap-6 mb-8">
                 <div>
                   <p className="text-3xl font-bold text-gray-900">500+</p>
@@ -139,7 +138,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* CTA Buttons */}
+              {/* Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   href="/cars"
@@ -158,16 +157,18 @@ export default function Home() {
 
             {/* Right Image */}
             <ClientMotion
-              initial={hasMounted ? { opacity: 0, x: 50 } : false}
-              animate={hasMounted ? { opacity: 1, x: 0 } : undefined}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               className="relative"
             >
               <div className="relative h-96 bg-linear-to-br from-red-400 to-red-600 rounded-lg overflow-hidden shadow-2xl">
-                <img
-                  src="https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=600&h=500&fit=crop"
+                <Image
+                  src={homepageImg}
+                  width={600}
+                  height={500}
                   alt="Luxury Car"
-                  className="w-full h-full object-cover mix-blend-overlay"
+                  className="w-full h-full object-cover "
                 />
                 <div className="absolute top-4 right-4 bg-orange-400 text-white px-4 py-2 rounded-lg font-bold shadow-lg">
                   Available Now
@@ -178,14 +179,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How It Works */}
+      {/* How It Works section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ClientMotion
-            initial={hasMounted ? { opacity: 0, y: 20 } : false}
-            whileInView={hasMounted ? { opacity: 1, y: 0 } : undefined}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            viewport={hasMounted ? { once: true } : undefined}
+            viewport={{ once: true }}
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -198,9 +199,9 @@ export default function Home() {
 
           <ClientMotion
             variants={containerVariants}
-            initial={hasMounted ? "hidden" : false}
-            whileInView={hasMounted ? "visible" : undefined}
-            viewport={hasMounted ? { once: true } : undefined}
+            initial={"hidden"}
+            whileInView={"visible"}
+            viewport={{ once: true }}
             className="grid grid-cols-1 md:grid-cols-3 gap-8"
           >
             {[
@@ -245,10 +246,10 @@ export default function Home() {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ClientMotion
-            initial={hasMounted ? { opacity: 0, y: 20 } : false}
-            whileInView={hasMounted ? { opacity: 1, y: 0 } : undefined}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            viewport={hasMounted ? { once: true } : undefined}
+            viewport={{ once: true }}
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -261,9 +262,9 @@ export default function Home() {
 
           <ClientMotion
             variants={containerVariants}
-            initial={hasMounted ? "hidden" : false}
-            whileInView={hasMounted ? "visible" : undefined}
-            viewport={hasMounted ? { once: true } : undefined}
+            initial={"hidden"}
+            whileInView={"visible"}
+            viewport={{ once: true }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
           >
             {featuredCars.map((car) => (
@@ -279,10 +280,10 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ClientMotion
-            initial={hasMounted ? { opacity: 0, y: 20 } : false}
-            whileInView={hasMounted ? { opacity: 1, y: 0 } : undefined}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            viewport={hasMounted ? { once: true } : undefined}
+            viewport={{ once: true }}
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -293,11 +294,11 @@ export default function Home() {
             </p>
           </ClientMotion>
 
-          <motion.div
+          <ClientMotion
             variants={containerVariants}
-            initial={hasMounted ? "hidden" : false}
-            whileInView={hasMounted ? "visible" : undefined}
-            viewport={hasMounted ? { once: true } : undefined}
+            initial={"hidden"}
+            whileInView={"visible"}
+            viewport={{ once: true }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
           >
             {partners.map((partner) => (
@@ -313,18 +314,18 @@ export default function Home() {
                 <p className="text-gray-600 text-sm">{partner.description}</p>
               </motion.div>
             ))}
-          </motion.div>
+          </ClientMotion>
         </div>
       </section>
 
       {/* Testimonials */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={hasMounted ? { opacity: 0, y: 20 } : false}
-            whileInView={hasMounted ? { opacity: 1, y: 0 } : undefined}
+          <ClientMotion
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            viewport={hasMounted ? { once: true } : undefined}
+            viewport={{ once: true }}
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -333,13 +334,13 @@ export default function Home() {
             <p className="text-gray-600 text-lg">
               Real experiences from satisfied customers
             </p>
-          </motion.div>
+          </ClientMotion>
 
-          <motion.div
+          <ClientMotion
             variants={containerVariants}
-            initial={hasMounted ? "hidden" : false}
-            whileInView={hasMounted ? "visible" : undefined}
-            viewport={hasMounted ? { once: true } : undefined}
+            initial={"hidden"}
+            whileInView={"visible"}
+            viewport={{ once: true }}
             className="grid grid-cols-1 md:grid-cols-3 gap-8"
           >
             {testimonials.map((testimonial) => (
@@ -359,9 +360,7 @@ export default function Home() {
                   ))}
                 </div>
 
-                <p className="text-gray-700 mb-6 italic">
-                  &quot;{testimonial.text}&quot;
-                </p>
+                <p className="text-gray-700 mb-6 italic">{`"${testimonial.text}"`}</p>
 
                 <div className="border-t pt-4">
                   <p className="font-bold text-gray-900">{testimonial.name}</p>
@@ -369,18 +368,18 @@ export default function Home() {
                 </div>
               </motion.div>
             ))}
-          </motion.div>
+          </ClientMotion>
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="bg-red-600 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={hasMounted ? { opacity: 0, y: 20 } : false}
-            whileInView={hasMounted ? { opacity: 1, y: 0 } : undefined}
+          <ClientMotion
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            viewport={hasMounted ? { once: true } : undefined}
+            viewport={{ once: true }}
           >
             <h2 className="text-4xl font-bold mb-4">
               Ready to Find Your Perfect Car?
@@ -409,7 +408,7 @@ export default function Home() {
             <p className="text-sm text-red-100">
               No spam, just exclusive deals and updates
             </p>
-          </motion.div>
+          </ClientMotion>
         </div>
       </section>
 

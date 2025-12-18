@@ -16,7 +16,7 @@ interface AuthContextType {
   role: UserRole;
   isLoggedIn: boolean;
   setUser: (user: User | null) => void;
-  login: (email: string, password: string, role: UserRole) => void;
+  login: (token: string, user: User) => void;
   logout: () => void;
 }
 
@@ -27,17 +27,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [role, setRole] = useState<UserRole>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const login = (email: string, password: string, userRole: UserRole) => {
-    const newUser: User = {
-      id: Math.random().toString(36).substr(2, 9),
-      name: email.split("@")[0],
-      email,
-      role: userRole,
-    };
-    setUser(newUser);
-    setRole(userRole);
+  React.useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    const storedToken = localStorage.getItem("token");
+    if (storedUser && storedToken) {
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+        setRole(parsedUser.role);
+        setIsLoggedIn(true);
+      } catch (error) {
+        console.error("Failed to parse user from local storage", error);
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+      }
+    }
+  }, []);
+
+  const login = (token: string, userData: User) => {
+    setUser(userData);
+    setRole(userData.role);
     setIsLoggedIn(true);
-    localStorage.setItem("user", JSON.stringify(newUser));
+    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("token", token);
   };
 
   const logout = () => {
@@ -45,6 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setRole(null);
     setIsLoggedIn(false);
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
   };
 
   return (

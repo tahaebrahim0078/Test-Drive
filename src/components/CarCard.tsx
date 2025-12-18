@@ -41,12 +41,14 @@ export default function CarCard({
         </div>
 
         {/* Button */}
-        <Link
-          href={`/cars/${id}`}
-          className="block w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition text-center"
-        >
-          View Details
-        </Link>
+        <button>
+          <Link
+            href={`/cars/${id}`}
+            className="block w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition text-center"
+          >
+            View Details
+          </Link>
+        </button>
       </div>
     </motion.div>
   );

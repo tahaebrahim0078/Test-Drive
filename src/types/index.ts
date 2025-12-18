@@ -6,6 +6,7 @@ export interface Car {
   category: string;
   price: number;
   image: string;
+  type: string;
   description?: string;
   specs?: Spec[];
   features?: string[];

@@ -1,5 +1,7 @@
 "use client";
-
+import bmwImage from "../../../../public/images/bmw3 series.png";
+import bmw_M from "../../../../public/images/bmw 3 series sport edition.png";
+import bmw_M_Sport from "../../../../public/images/bmw 3 series M Sport Pro.png";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
@@ -13,11 +15,11 @@ import {
   FiCalendar,
   FiStar,
 } from "react-icons/fi";
-
-export default function CarDetailPage({ params }: { params: { id: string } }) {
+import { useParams } from "next/navigation";
+export default function CarDetailPage() {
+  const params = useParams();
   const hasMounted = useHasMounted();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
   // Mock car data - replace with API call
   const car = {
     id: params.id,
@@ -46,11 +48,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
       "360 Camera",
       "Premium Sound System",
     ],
-    images: [
-      "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1617654112368-307921291f42?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=800&h=600&fit=crop",
-    ],
+    images: [`${bmwImage.src}`, `${bmw_M_Sport.src}`, `${bmw_M.src}`],
     dealer: {
       name: "BMW Downtown",
       location: "Downtown District",

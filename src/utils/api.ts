@@ -1,18 +1,8 @@
 // Mock API functions - Replace with actual API calls when backend is ready
-
 export async function fetchCars() {
-  // TODO: Replace with actual API call
-  return [
-    {
-      id: "1",
-      name: "BMW 3 Series",
-      category: "Luxury Sedan",
-      price: 150,
-      image:
-        "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=400&h=300&fit=crop",
-    },
-    // ... more cars
-  ];
+  const res = await fetch("http://localhost:4001/customer/cars");
+  if (!res.ok) throw new Error("Failed to fetch cars");
+  return res.json();
 }
 
 export async function fetchCarById(id: string) {

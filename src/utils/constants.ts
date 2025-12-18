@@ -1,12 +1,27 @@
 // Color constants
 export const COLORS = {
-  primary: "#EF4444", // Red
-  secondary: "#F97316", // Orange
-  dark: "#1F2937", // Dark Gray
-  light: "#F9FAFB", // Light Gray
+  primary: "#EF4444",
+  secondary: "#F97316",
+  dark: "#1F2937",
+  light: "#F9FAFB",
   white: "#FFFFFF",
 };
-
+export const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+export const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+  },
+};
 // Car categories
 export const CAR_CATEGORIES = [
   "Luxury Sedan",

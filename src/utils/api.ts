@@ -1,6 +1,13 @@
+import { fetchCarParams } from "@/types";
+
 // Mock API functions - Replace with actual API calls when backend is ready
-export async function fetchCars() {
-  const res = await fetch("http://localhost:4001/customer/cars");
+export async function fetchCars(params: fetchCarParams = {}) {
+  const query = new URLSearchParams(
+    Object.entries(params).filter(([_, value]) => value != null) // nullish check
+  ).toString();
+  const res = await fetch(
+    `http://localhost:4001/customer/cars${query ? `?${query}` : ""}`
+  );
   if (!res.ok) throw new Error("Failed to fetch cars");
   return res.json();
 }

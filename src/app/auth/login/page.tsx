@@ -48,24 +48,19 @@ export default function LoginPage() {
     console.log("Submitting Form Data:", formData);
 
     try {
-      const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4001";
-      const res = await fetch(`${API_BASE}/auth/login`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
-      const text = await res.text();
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch {
-        data = { message: text };
-      }
+      const data = await res.json();
       console.log("API Response Data:", data);
 
+      console.log("API Response Data:", data.accessToken, data.user);
+
       if (!res.ok) {
-        throw new Error(data?.message || `Login failed (${res.status})`);
+        throw new Error(data?.message || "Login failed");
       }
 
       if (data.accessToken && data.user) {

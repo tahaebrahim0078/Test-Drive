@@ -30,17 +30,47 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [role, setRole] = useState<UserRole>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 🔹 check auth on refresh
+  const checkAuth = () => {
+    try {
+      const storedUser = localStorage.getItem("user");
+      const token = localStorage.getItem("token");
+
+      if (storedUser && token) {
+        const parsedUser: User = JSON.parse(storedUser);
+        setUser(parsedUser);
+        setRole(parsedUser.role);
+        setIsLoggedIn(true);
+      }
+    } catch (error) {
+      console.error("Auth check failed", error);
+      logout();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   const login = (email: string, password: string, userRole: UserRole) => {
-    const newUser: User = {
-      id: Math.random().toString(36).substr(2, 9),
+    // ⚠️ mock login (بدل API)
+    const userData: User = {
+      id: Math.random().toString(36).slice(2),
       name: email.split("@")[0],
       email,
       role: userRole,
     };
-    setUser(newUser);
+
+    const token = "mock-token";
+
+    setUser(userData);
     setRole(userRole);
     setIsLoggedIn(true);
+
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("token", token);
   };

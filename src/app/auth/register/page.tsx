@@ -38,7 +38,7 @@ export default function RegisterPage() {
 
     try {
       const res = await fetch(
-        `http://localhost:4001/auth/register/${formData.role}`,
+        `http://localhost:5000/auth/register/${formData.role}`,
         {
           method: "POST",
           headers: {

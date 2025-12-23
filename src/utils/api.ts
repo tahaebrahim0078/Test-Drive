@@ -1,73 +1,15 @@
-// API Configuration
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
+import { fetchCarParams } from "@/types";
 
-// Type Definitions
-interface CarSpecs {
-  engine: string;
-  transmission: string;
-  fuelType: string;
-  horsepower: number;
-  color: string;
-}
-
-interface Car {
-  id: string;
-  brand: string;
-  model: string;
-  year: number;
-  price: number;
-  images: string[];
-  specs: CarSpecs;
-  dealerId?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-interface BookingData {
-  carId: string;
-  customerId: string;
-  date: string;
-  time: string;
-  notes?: string;
-}
-
-interface ReviewData {
-  carId: string;
-  customerId: string;
-  rating: number;
-  comment: string;
-}
-
-// Helper function for API calls
-async function apiCall<T>(
-  endpoint: string,
-  options: RequestInit = {}
-): Promise<T> {
-  const url = `${API_BASE_URL}${endpoint}`;
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`API Error: ${response.status} ${response.statusText}`);
-  }
-
-  return response.json();
-}
-
-// Car Management APIs
-export async function fetchCars() {
-  try {
-    return await apiCall<Car[]>("/cars");
-  } catch (error) {
-    console.error("Error fetching cars:", error);
-    return [];
-  }
+// Mock API functions - Replace with actual API calls when backend is ready
+export async function fetchCars(params: fetchCarParams = {}) {
+  const query = new URLSearchParams(
+    Object.entries(params).filter(([_, value]) => value != null) // nullish check
+  ).toString();
+  const res = await fetch(
+    `http://localhost:4001/customer/cars${query ? `?${query}` : ""}`
+  );
+  if (!res.ok) throw new Error("Failed to fetch cars");
+  return res.json();
 }
 
 export async function fetchCarById(id: string) {

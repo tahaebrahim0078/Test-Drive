@@ -5,13 +5,6 @@
   --foreground: #171717;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -23,4 +16,36 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer components {
+  /* --- FILTER STYLES --- */
+  .filter-label {
+    @apply text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1;
+  }
+
+  .filter-input {
+    @apply px-4 py-2.5 bg-gray-50 border border-gray-200 text-gray-700 
+           placeholder-gray-400 rounded-xl focus:bg-white focus:ring-4 
+           focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all;
+  }
+
+  @import "tailwindcss";
+
+  @layer components {
+    .pagination-prev,
+    .pagination-next {
+      @apply flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl 
+           font-bold transition-all active:scale-95 disabled:opacity-30 
+           disabled:pointer-events-none disabled:grayscale shadow-sm;
+    }
+
+    .pagination-prev {
+      @apply bg-white border border-gray-200 text-gray-700 hover:bg-gray-50;
+    }
+
+    .pagination-next {
+      @apply bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-100;
+    }
+  }
 }

@@ -14,6 +14,7 @@ export default function RegisterPage() {
     email: "",
     password: "",
     confirmPassword: "",
+    phone: "",
     role: "customer",
   });
 
@@ -27,10 +28,42 @@ export default function RegisterPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
-    // TODO: Connect to backend API
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `http://localhost:4001/auth/register/${formData.role}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            password: formData.password,
+          }),
+        }
+      );
+      const data = await res.json();
+      console.log(res);
+      if (!res.ok) {
+        throw new Error(data.message || "Registration failed");
+      }
+
+      console.log("Registration successful:", data);
+      window.location.href = "/auth/login";
+    } catch (error: any) {
+      console.error("Register error:", error.message);
+      alert(error.message);
+    }
   };
 
   return (
@@ -115,7 +148,26 @@ export default function RegisterPage() {
                   <option value="admin">Admin</option>
                 </select>
               </div>
-
+              <div>
+                {/* Phone Number */}
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Phone Number
+                </label>
+                <div className="relative">
+                  <FiUser
+                    className="absolute left-3 top-3 text-gray-400"
+                    size={18}
+                  />
+                  <input
+                    type="text"
+                    name="phone"
+                    value={(formData as any).phone || ""}
+                    onChange={handleChange}
+                    placeholder="Your phone number"
+                    className="w-full pl-10 text-black pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
+                  />
+                </div>
+              </div>
               {/* Password */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">

@@ -1,105 +1,81 @@
 "use client";
-
+import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CarCard from "@/components/CarCard";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import useHasMounted from "@/hooks/useHasMounted";
-import { FiFilter, FiSearch } from "react-icons/fi";
-
-const allCars = [
-  {
-    id: "1",
-    name: "BMW 3 Series",
-    category: "Luxury Sedan",
-    price: 150,
-    image:
-      "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=400&h=300&fit=crop",
-  },
-  {
-    id: "2",
-    name: "Mercedes C-Class",
-    category: "Luxury Sedan",
-    price: 160,
-    image:
-      "https://images.unsplash.com/photo-1651362351519-f8e5e055f5f5?w=400&h=300&fit=crop",
-  },
-  {
-    id: "3",
-    name: "Audi Q5",
-    category: "Luxury SUV",
-    price: 170,
-    image:
-      "https://images.unsplash.com/photo-1606559405297-5ce89cacb054?w=400&h=300&fit=crop",
-  },
-  {
-    id: "4",
-    name: "Tesla Model S",
-    category: "Electric Luxury",
-    price: 180,
-    image:
-      "https://images.unsplash.com/photo-1560958089-b8a46dd52956?w=400&h=300&fit=crop",
-  },
-  {
-    id: "5",
-    name: "Porsche 911",
-    category: "Sports Car",
-    price: 200,
-    image:
-      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&h=300&fit=crop",
-  },
-  {
-    id: "6",
-    name: "Range Rover",
-    category: "Luxury SUV",
-    price: 190,
-    image:
-      "https://images.unsplash.com/photo-1609168773984-c4222ffd9626?w=400&h=300&fit=crop",
-  },
-  {
-    id: "7",
-    name: "Ferrari F8",
-    category: "Supercar",
-    price: 250,
-    image:
-      "https://images.unsplash.com/photo-1553882900-d5160ca84f61?w=400&h=300&fit=crop",
-  },
-  {
-    id: "8",
-    name: "Lamborghini Huracán",
-    category: "Supercar",
-    price: 280,
-    image:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
-  },
-];
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiFilter,
+  FiSearch,
+} from "react-icons/fi";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCars } from "@/utils/api";
+import { Car, fetchCarParams } from "@/types/index";
 
 export default function CarsPage() {
-  const hasMounted = useHasMounted();
-  const [filteredCars, setFilteredCars] = useState(allCars);
+  const [page, setPage] = useState(1);
+  const [filterOptions, setFilterOptions] = useState<fetchCarParams>({
+    brand: "",
+    model: "",
+    year: "",
+    limit: 10,
+    page: 1,
+  });
+
+  const [appliedFilters, setAppliedFilters] = useState({});
+
   const [searchQuery, setSearchQuery] = useState("");
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    const filtered = allCars.filter(
-      (car) =>
-        car.name.toLowerCase().includes(query.toLowerCase()) ||
-        car.category.toLowerCase().includes(query.toLowerCase())
-    );
-    setFilteredCars(filtered);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["cars", appliedFilters, page],
+    queryFn: async () =>
+      await fetchCars({ ...appliedFilters, page, limit: filterOptions.limit }),
+    staleTime: 1000 * 60 * 30,
+  });
+  const allCars = React.useMemo(() => data?.data || [], [data]);
+
+  const handleFilterOptions = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFilterOptions((prevState: fetchCarParams) => ({
+      ...prevState,
+      [name]:
+        name === "year" || name === "limit"
+          ? value === ""
+            ? undefined
+            : Number(value)
+          : value,
+    }));
   };
 
-  const handleFilter = (category: string) => {
-    if (category === "all") {
-      setFilteredCars(allCars);
-    } else {
-      const filtered = allCars.filter((car) =>
-        car.category.toLowerCase().includes(category.toLowerCase())
-      );
-      setFilteredCars(filtered);
-    }
+  const applyFilters = () => {
+    const parsed = {
+      brand: filterOptions.brand?.trim() || undefined,
+      model: filterOptions.model?.trim() || undefined,
+      year: filterOptions.year ? Number(filterOptions.year) : undefined,
+      limit: filterOptions.limit ? Number(filterOptions.limit) : undefined,
+    };
+    setPage(1);
+    setAppliedFilters(parsed);
   };
+
+  const carsToRender = React.useMemo(() => {
+    if (!searchQuery) return allCars;
+    return allCars.filter(
+      (car: Car) =>
+        car.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        car.model.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [allCars, searchQuery]);
+  if (isLoading) {
+    return <h2>...Loading</h2>;
+  }
+
+  if (error) return <p>Error loading the cars</p>;
 
   return (
     <main>
@@ -119,63 +95,134 @@ export default function CarsPage() {
               type="text"
               placeholder="Search by car name or category..."
               value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="flex-1 px-3 py-2 outline-none text-gray-800"
             />
           </div>
+          {/* Filter Panel */}
+          <section className="bg-white border border-gray-100 py-8 rounded-3xl mb-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex flex-wrap gap-6 items-end"
+              >
+                {/* BRAND */}
+                <div className="flex flex-col gap-1.5">
+                  <label className="filter-label">Brand</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. BMW"
+                    name="brand"
+                    value={filterOptions.brand}
+                    onChange={handleFilterOptions}
+                    className="filter-input"
+                  />
+                </div>
 
-          {/* Filters */}
-          <div className="flex flex-wrap gap-3">
-            <button
-              onClick={() => handleFilter("all")}
-              className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition"
-            >
-              <FiFilter size={18} />
-              All Cars
-            </button>
-            <button
-              onClick={() => handleFilter("Sedan")}
-              className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg transition"
-            >
-              Sedans
-            </button>
-            <button
-              onClick={() => handleFilter("SUV")}
-              className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg transition"
-            >
-              SUVs
-            </button>
-            <button
-              onClick={() => handleFilter("Sports")}
-              className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg transition"
-            >
-              Sports
-            </button>
-            <button
-              onClick={() => handleFilter("Supercar")}
-              className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg transition"
-            >
-              Supercars
-            </button>
-          </div>
+                {/* MODEL */}
+                <div className="flex flex-col gap-1.5">
+                  <label className="filter-label">Model</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. M4"
+                    name="model"
+                    value={filterOptions.model}
+                    onChange={handleFilterOptions}
+                    className="filter-input"
+                  />
+                </div>
+
+                {/* YEAR - Custom CSS to hide arrows */}
+                <div className="flex flex-col gap-1.5">
+                  <label className="filter-label">Year</label>
+                  <input
+                    type="number"
+                    placeholder="2024"
+                    min={2024}
+                    max={2026}
+                    name="year"
+                    value={filterOptions.year}
+                    onChange={handleFilterOptions}
+                    className="filter-input"
+                  />
+                </div>
+
+                {/* LIMIT */}
+                <div className="flex flex-col gap-1.5">
+                  <label className="filter-label">Results</label>
+                  <select
+                    name="limit"
+                    value={filterOptions.limit}
+                    onChange={handleFilterOptions}
+                    className="filter-input cursor-pointer appearance-none"
+                  >
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                  </select>
+                </div>
+
+                {/* APPLY BUTTON */}
+                <button
+                  onClick={applyFilters}
+                  className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-950 text-white font-bold px-8 py-3 rounded-xl transition-all active:scale-95 shadow-lg shadow-blue-200"
+                >
+                  <FiFilter size={18} />
+                  <span>Apply Filters</span>
+                </button>
+              </motion.div>
+            </div>
+          </section>
         </div>
       </section>
 
       {/* Cars Grid */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {filteredCars.length > 0 ? (
-            <motion.div
-              initial={hasMounted ? { opacity: 0 } : false}
-              animate={hasMounted ? { opacity: 1 } : undefined}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-            >
-              {filteredCars.map((car) => (
-                <motion.div key={car.id} whileHover={{ y: -5 }}>
-                  <CarCard {...car} />
-                </motion.div>
-              ))}
-            </motion.div>
+          {carsToRender.length > 0 ? (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+              >
+                {carsToRender.map((car: Car) => (
+                  <motion.div key={car._id}>
+                    <CarCard {...car} />
+                  </motion.div>
+                ))}
+              </motion.div>
+              <div className="flex justify-center items-center gap-6 mt-12 mb-8 ">
+                <button
+                  disabled={!data?.hasPrevPage}
+                  onClick={() =>
+                    data?.hasPrevPage && setPage((prev) => prev - 1)
+                  }
+                  className="pagination-prev"
+                >
+                  <FiChevronLeft size={20} />
+                </button>
+
+                {/* Page Counter */}
+                <div className="page-indicator">
+                  <span className="text-blue-800">{data?.page}</span>
+                  <span className="mx-2 text-gray-500">/</span>
+                  <span className="text-gray-500">{data?.totalPages}</span>
+                </div>
+
+                <button
+                  disabled={!data?.hasNextPage}
+                  onClick={() =>
+                    data?.hasNextPage && setPage((prev) => prev + 1)
+                  }
+                  className="pagination-next"
+                >
+                  <FiChevronRight size={20} />
+                </button>
+              </div>
+            </>
           ) : (
             <div className="text-center py-12">
               <p className="text-gray-600 text-lg">

@@ -19,7 +19,7 @@ interface AuthContextType {
   isLoggedIn: boolean;
   isLoading: boolean;
   setUser: (user: User | null) => void;
-  login: (email: string, password: string, role: UserRole) => Promise<void>;
+  login: (email: string, password: string, role: UserRole) => void;
   logout: () => void;
   checkAuth: () => void;
 }
@@ -30,61 +30,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [role, setRole] = useState<UserRole>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
-  // Check authentication on mount
-  useEffect(() => {
-    checkAuth();
-  }, []);
-
-  const checkAuth = () => {
-    try {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
-        setRole(parsedUser.role);
-        setIsLoggedIn(true);
-      }
-    } catch (error) {
-      console.error("Auth check error:", error);
-      localStorage.removeItem("user");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const login = async (email: string, password: string, userRole: UserRole) => {
-    // Validate inputs
-    if (!email || !password || !userRole) {
-      throw new Error("Email, password, and role are required");
-    }
-
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      throw new Error("Invalid email format");
-    }
-
-    // Validate password length
-    if (password.length < 6) {
-      throw new Error("Password must be at least 6 characters");
-    }
-
-    // TODO: Call actual API for authentication
-    // For now, create mock user
+  const login = (email: string, password: string, userRole: UserRole) => {
     const newUser: User = {
       id: Math.random().toString(36).substr(2, 9),
       name: email.split("@")[0],
       email,
       role: userRole,
-      verified: true,
     };
-
     setUser(newUser);
     setRole(userRole);
     setIsLoggedIn(true);
-    localStorage.setItem("user", JSON.stringify(newUser));
+    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("token", token);
   };
 
   const logout = () => {
@@ -92,6 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setRole(null);
     setIsLoggedIn(false);
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
   };
 
   return (

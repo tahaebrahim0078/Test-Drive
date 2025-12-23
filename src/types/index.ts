@@ -1,23 +1,47 @@
 // Type definitions for the application
 
 export interface Car {
-  id: string;
+  _id: string;
   name: string;
+  brand: string;
+  model: string;
   category: string;
   price: number;
-  image: string;
+  images: string[];
   description?: string;
-  specs?: Spec[];
+  specs: Spec;
   features?: string[];
   rating?: number;
   reviews?: number;
 }
 
 export interface Spec {
-  label: string;
-  value: string;
+  transmission: string;
+  color: string;
+  acceleration: number;
+  drivetype: string;
+  engine: string;
+  fuelType: string;
+  tankcapacity: number;
+  torque: number;
+  horsepower: number;
+  type: string;
 }
-
+export interface fetchCarParams {
+  brand?: string;
+  model?: string;
+  dealerId?: string;
+  limit?: number;
+  year?: string;
+  page?: number;
+}
+export interface CarCardProps {
+  _id: string;
+  brand: string;
+  model: string;
+  price: number;
+  images: string[];
+}
 export interface Booking {
   id: string;
   carId: string;

@@ -65,10 +65,7 @@ export default function CarCard({
           </div>
         </div>
 
-        <Link
-          href={`/cars/${_id}`}
-          className="block w-full bg-red-600 hover:bg-red-950 text-white font-bold py-3.5 px-4 rounded-2xl transition-all active:scale-95 text-center shadow-lg shadow-blue-100"
-        >
+        <Link href={`/cars/${_id}`} className="main-btn">
           View Details
         </Link>
       </div>

@@ -1,4 +1,8 @@
 // Color constants
+import audiLogo from "@/../public/images/audiLogo.png";
+import bmwLogo from "@/../public/images/bmwLogo.png";
+import mercedesLogo from "@/../public/images/mercedesLogo.png";
+import teslaLogo from "@/../public/images/teslaLogo.png";
 export const COLORS = {
   primary: "#EF4444",
   secondary: "#F97316",
@@ -22,6 +26,55 @@ export const itemVariants = {
     y: 0,
   },
 };
+export const partners = [
+  {
+    id: 1,
+    name: "BMW Downtown",
+    description: "Premium BMW Experience",
+    image: bmwLogo,
+  },
+  {
+    id: 2,
+    name: "Mercedes Central",
+    description: "Luxury Mercedes Collection",
+    image: mercedesLogo,
+  },
+  {
+    id: 3,
+    name: "Audi Prestige",
+    description: "Innovation & Performance",
+    image: audiLogo,
+  },
+  {
+    id: 4,
+    name: "Tesla",
+    description: "Electric Future",
+    image: teslaLogo,
+  },
+];
+export const testimonials = [
+  {
+    id: 1,
+    name: "Sarah Johnson",
+    role: "Marketing Manager",
+    rating: 5,
+    text: "Absolutely seamless experience! Booked a drive in minutes and the dealer was perfectly prepared. The platform made everything so simple.",
+  },
+  {
+    id: 2,
+    name: "Michael Chen",
+    role: "Software Engineer",
+    rating: 5,
+    text: "Found my dream car through DriveTest. The booking process was smooth and the dealer service exceeded my expectations. Highly recommended!",
+  },
+  {
+    id: 3,
+    name: "Emma Rodriguez",
+    role: "Business Consultant",
+    rating: 5,
+    text: "Perfect for busy professionals! I was able to compare multiple cars and book test drives without any hassle. The platform saved me hours of time.",
+  },
+];
 // Car categories
 export const CAR_CATEGORIES = [
   "Luxury Sedan",
@@ -45,9 +98,6 @@ export const USER_ROLES = {
   DEALER: "dealer",
   ADMIN: "admin",
 };
-
-// Pagination
-export const ITEMS_PER_PAGE = 12;
 
 // Time slots for bookings
 export const TIME_SLOTS = [

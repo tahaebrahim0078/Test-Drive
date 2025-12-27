@@ -1,4 +1,4 @@
-import { fetchCarParams } from "@/types";
+import { Car, fetchCarParams } from "@/types";
 
 // Mock API functions - Replace with actual API calls when backend is ready
 export async function fetchCars(params: fetchCarParams = {}) {
@@ -6,22 +6,22 @@ export async function fetchCars(params: fetchCarParams = {}) {
     Object.entries(params).filter(([_, value]) => value != null) // nullish check
   ).toString();
   const res = await fetch(
-    `http://localhost:4001/customer/cars${query ? `?${query}` : ""}`
+    `${process.env.NEXT_PUBLIC_API_URL}/customer/cars${
+      query ? `?${query}` : ""
+    }`
   );
   if (!res.ok) throw new Error("Failed to fetch cars");
   return res.json();
 }
-
 export async function fetchCarById(id: string) {
-  // TODO: Replace with actual API call
-  return {
-    id,
-    name: "BMW 3 Series",
-    category: "Luxury Sedan",
-    price: 150,
-    rating: 4.8,
-    reviews: 245,
-  };
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/customer/cars/${id}`
+  );
+  if (!res.ok)
+    throw new Error(
+      "OOPs, Cannot get the car right now, please check your netwrok and try again!"
+    );
+  return res.json();
 }
 
 export async function createBooking(bookingData: any) {

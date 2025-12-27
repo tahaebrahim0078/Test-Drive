@@ -5,23 +5,24 @@ import Footer from "@/components/Footer";
 import CarCard from "@/components/CarCard";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  FiChevronLeft,
-  FiChevronRight,
-  FiFilter,
-  FiSearch,
-} from "react-icons/fi";
+import { FiFilter, FiSearch } from "react-icons/fi";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCars } from "@/utils/api";
 import { Car, fetchCarParams } from "@/types/index";
+import PaginationButtons from "@/components/home_page_components/PaginationButtons";
+import { useRouter } from "next/navigation";
+import LoadingState from "@/components/sharedComponents/LoadingState";
+import ErrorState from "@/components/sharedComponents/ErrorState";
 
 export default function CarsPage() {
+  const router = useRouter();
   const [page, setPage] = useState(1);
+
   const [filterOptions, setFilterOptions] = useState<fetchCarParams>({
     brand: "",
     model: "",
     year: "",
-    limit: 10,
+    limit: "10",
     page: 1,
   });
 
@@ -31,10 +32,10 @@ export default function CarsPage() {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["cars", appliedFilters, page],
-    queryFn: async () =>
-      await fetchCars({ ...appliedFilters, page, limit: filterOptions.limit }),
+    queryFn: async () => await fetchCars({ ...appliedFilters, page }),
     staleTime: 1000 * 60 * 30,
   });
+
   const allCars = React.useMemo(() => data?.data || [], [data]);
 
   const handleFilterOptions = (
@@ -43,24 +44,31 @@ export default function CarsPage() {
     const { name, value } = e.target;
     setFilterOptions((prevState: fetchCarParams) => ({
       ...prevState,
-      [name]:
-        name === "year" || name === "limit"
-          ? value === ""
-            ? undefined
-            : Number(value)
-          : value,
+      [name]: value,
     }));
+  };
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    const params = new URLSearchParams(window.location.search);
+    params.set("page", String(newPage));
+    router.push(`?${params.toString()}`);
   };
 
   const applyFilters = () => {
-    const parsed = {
-      brand: filterOptions.brand?.trim() || undefined,
-      model: filterOptions.model?.trim() || undefined,
-      year: filterOptions.year ? Number(filterOptions.year) : undefined,
-      limit: filterOptions.limit ? Number(filterOptions.limit) : undefined,
-    };
+    const parsed = Object.fromEntries(
+      Object.entries(filterOptions)
+        .filter(([_, value]) => value !== "")
+        .map(([key, value]) => {
+          if (key === "limit" || key === "year") {
+            return [key, Number(value)];
+          }
+          return [key, value];
+        })
+    );
     setPage(1);
     setAppliedFilters(parsed);
+    const query = new URLSearchParams(parsed).toString();
+    router.push(`/cars?${query}`);
   };
 
   const carsToRender = React.useMemo(() => {
@@ -72,17 +80,16 @@ export default function CarsPage() {
     );
   }, [allCars, searchQuery]);
   if (isLoading) {
-    return <h2>...Loading</h2>;
+    return <LoadingState />;
   }
-
-  if (error) return <p>Error loading the cars</p>;
+  if (error) return <ErrorState message={String(error)} />;
 
   return (
     <main>
       <Navbar />
 
       {/* Header */}
-      <section className="bg-linear-to-r from-gray-50 to-gray-100 py-12">
+      <section className="bg-linear-to-r from-gray-50 to-gray-100 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-6">
             Browse Our Cars
@@ -90,7 +97,7 @@ export default function CarsPage() {
 
           {/* Search Bar */}
           <div className="flex items-center bg-white rounded-lg shadow-lg p-2 mb-6">
-            <FiSearch className="text-gray-400 mx-3" size={20} />
+            <FiSearch className="text-red-600 " size={20} />
             <input
               type="text"
               placeholder="Search by car name or category..."
@@ -163,12 +170,25 @@ export default function CarsPage() {
                     <option value="50">50</option>
                   </select>
                 </div>
-
-                {/* APPLY BUTTON */}
                 <button
-                  onClick={applyFilters}
-                  className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-950 text-white font-bold px-8 py-3 rounded-xl transition-all active:scale-95 shadow-lg shadow-blue-200"
+                  type="button"
+                  onClick={() => {
+                    setFilterOptions({
+                      brand: "",
+                      model: "",
+                      year: "",
+                      limit: "10",
+                      page: 1,
+                    });
+                    setAppliedFilters({});
+                    router.push("/cars");
+                  }}
+                  className="text-sm font-semibold text-gray-400 hover:text-red-500 transition-colors px-4 py-2"
                 >
+                  Clear All
+                </button>
+                {/* APPLY BUTTON */}
+                <button onClick={applyFilters} className="main-btn">
                   <FiFilter size={18} />
                   <span>Apply Filters</span>
                 </button>
@@ -194,34 +214,14 @@ export default function CarsPage() {
                   </motion.div>
                 ))}
               </motion.div>
-              <div className="flex justify-center items-center gap-6 mt-12 mb-8 ">
-                <button
-                  disabled={!data?.hasPrevPage}
-                  onClick={() =>
-                    data?.hasPrevPage && setPage((prev) => prev - 1)
-                  }
-                  className="pagination-prev"
-                >
-                  <FiChevronLeft size={20} />
-                </button>
-
-                {/* Page Counter */}
-                <div className="page-indicator">
-                  <span className="text-blue-800">{data?.page}</span>
-                  <span className="mx-2 text-gray-500">/</span>
-                  <span className="text-gray-500">{data?.totalPages}</span>
-                </div>
-
-                <button
-                  disabled={!data?.hasNextPage}
-                  onClick={() =>
-                    data?.hasNextPage && setPage((prev) => prev + 1)
-                  }
-                  className="pagination-next"
-                >
-                  <FiChevronRight size={20} />
-                </button>
-              </div>
+              {/* pagination */}
+              <PaginationButtons
+                page={page}
+                totalPages={data?.totalPages || 1}
+                onPageChange={handlePageChange}
+                hasPrevPage={data?.hasPrevPage}
+                hasNextPage={data?.hasNextPage}
+              />
             </>
           ) : (
             <div className="text-center py-12">
@@ -232,7 +232,6 @@ export default function CarsPage() {
           )}
         </div>
       </section>
-
       <Footer />
     </main>
   );

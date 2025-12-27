@@ -1,67 +1,46 @@
 "use client";
-import bmwImage from "../../../../public/images/bmw3 series.png";
-import bmw_M from "../../../../public/images/bmw 3 series sport edition.png";
-import bmw_M_Sport from "../../../../public/images/bmw 3 series M Sport Pro.png";
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { useState } from "react";
-import useHasMounted from "@/hooks/useHasMounted";
-import {
-  FiChevronLeft,
-  FiChevronRight,
-  FiMapPin,
-  FiCalendar,
-  FiStar,
-} from "react-icons/fi";
 import { useParams } from "next/navigation";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import ClientMotion from "@/components/ClientMotion";
+import Image from "next/image";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCarById } from "@/utils/api";
+import { useQueryClient } from "@tanstack/react-query";
+import { Car } from "@/types";
+import LoadingState from "@/components/sharedComponents/LoadingState";
+import ErrorState from "@/components/sharedComponents/ErrorState";
 export default function CarDetailPage() {
-  const params = useParams();
-  const hasMounted = useHasMounted();
+  const carId = useParams().id;
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  // Mock car data - replace with API call
-  const car = {
-    id: params.id,
-    name: "BMW 3 Series",
-    category: "Luxury Sedan",
-    price: 150,
-    rating: 4.8,
-    reviews: 245,
-    description:
-      "Experience luxury and performance with the BMW 3 Series. Features cutting-edge technology, premium interior, and smooth handling.",
-    specs: [
-      { label: "Engine", value: "2.0L Twin-Turbo" },
-      { label: "Power", value: "255 HP" },
-      { label: "Transmission", value: "Automatic 8-Speed" },
-      { label: "0-60 mph", value: "5.5 seconds" },
-      { label: "Top Speed", value: "130 mph" },
-      { label: "Fuel Type", value: "Gasoline" },
-    ],
-    features: [
-      "Premium Leather Interior",
-      "Navigation System",
-      "Panoramic Sunroof",
-      "Heads-Up Display",
-      "Ambient Lighting",
-      "Adaptive Cruise Control",
-      "360 Camera",
-      "Premium Sound System",
-    ],
-    images: [`${bmwImage.src}`, `${bmw_M_Sport.src}`, `${bmw_M.src}`],
-    dealer: {
-      name: "BMW Downtown",
-      location: "Downtown District",
-      rating: 4.9,
-      reviews: 512,
-    },
-    availability: [
-      { date: "Dec 10", slots: ["10:00 AM", "2:00 PM", "4:00 PM"] },
-      { date: "Dec 11", slots: ["9:00 AM", "1:00 PM", "3:00 PM"] },
-      { date: "Dec 12", slots: ["11:00 AM", "2:30 PM"] },
-    ],
-  };
+  const queryClient = useQueryClient();
 
+  const {
+    data: car,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["car", carId],
+    queryFn: async () => await fetchCarById(carId as string),
+    enabled: !!carId,
+    initialData: () => {
+      const cachedCar = queryClient
+        .getQueriesData<{ data: Car[] }>({
+          queryKey: ["cars"],
+        })
+        .flatMap(([_, value]) => value?.data);
+      return cachedCar.find((c) => c?._id === carId);
+    },
+    // staleTime: 1000 * 60 * 30,
+  });
+
+  if (isLoading) return <LoadingState />;
+  if (isError || !car) return <ErrorState message={"Car Not Found"} />;
+  console.log(car);
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % car.images.length);
   };
@@ -90,16 +69,19 @@ export default function CarDetailPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
             {/* Image Gallery */}
-            <motion.div
-              initial={hasMounted ? { opacity: 0 } : false}
-              animate={hasMounted ? { opacity: 1 } : undefined}
+            <ClientMotion
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               className="relative"
             >
               <div className="relative h-96 bg-gray-200 rounded-lg overflow-hidden">
-                <img
+                <Image
                   src={car.images[currentImageIndex]}
-                  alt={car.name}
-                  className="w-full h-full object-cover"
+                  fill
+                  alt={car.brand}
+                  priority={true}
+                  loading="eager"
+                  className="w-full h-full object-contain"
                 />
 
                 {/* Navigation Buttons */}
@@ -131,38 +113,18 @@ export default function CarDetailPage() {
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </ClientMotion>
 
             {/* Car Info */}
-            <motion.div
-              initial={hasMounted ? { opacity: 0, x: 20 } : false}
-              animate={hasMounted ? { opacity: 1, x: 0 } : undefined}
+            <ClientMotion
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
             >
               <h1 className="text-4xl font-bold text-gray-900 mb-2">
-                {car.name}
+                {car.brand}
               </h1>
-              <p className="text-gray-600 text-lg mb-4">{car.category}</p>
-
-              {/* Rating */}
-              <div className="flex items-center gap-2 mb-6">
-                <div className="flex">
-                  {[...Array(5)].map((_, i) => (
-                    <FiStar
-                      key={i}
-                      className={`${
-                        i < Math.floor(car.rating)
-                          ? "text-orange-400 fill-current"
-                          : "text-gray-300"
-                      }`}
-                      size={18}
-                    />
-                  ))}
-                </div>
-                <span className="text-gray-600">
-                  {car.rating} ({car.reviews} reviews)
-                </span>
-              </div>
+              <p className="text-gray-600 text-lg mb-4">{car.model}</p>
 
               {/* Price */}
               <div className="bg-red-600 text-white p-4 rounded-lg mb-6">
@@ -177,7 +139,7 @@ export default function CarDetailPage() {
               <p className="text-gray-700 mb-8">{car.description}</p>
 
               {/* Dealer Info */}
-              <div className="bg-gray-50 p-4 rounded-lg mb-8">
+              {/* <div className="bg-gray-50 p-4 rounded-lg mb-8">
                 <h3 className="font-bold text-gray-900 mb-3">
                   Dealer Information
                 </h3>
@@ -189,56 +151,50 @@ export default function CarDetailPage() {
                     <FiMapPin size={16} />
                     {car.dealer.location}
                   </p>
-                  <p className="text-gray-600">
-                    Rating: {car.dealer.rating} ⭐ ({car.dealer.reviews}{" "}
-                    reviews)
-                  </p>
                 </div>
-              </div>
+              </div> */}
 
               {/* Book Button */}
               <Link
-                href={`/booking/${car.id}`}
+                href={`/booking/${car._id}`}
                 className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition text-center block mb-4"
               >
                 Book Test Drive
               </Link>
-            </motion.div>
+            </ClientMotion>
           </div>
 
           {/* Specs and Features */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
             {/* Specs */}
-            <motion.div
-              initial={hasMounted ? { opacity: 0, y: 20 } : false}
-              whileInView={hasMounted ? { opacity: 1, y: 0 } : undefined}
-              viewport={hasMounted ? { once: true } : undefined}
+            <ClientMotion
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
             >
               <h2 className="text-2xl font-bold text-gray-900 mb-6">
                 Specifications
               </h2>
               <div className="space-y-4">
-                {car.specs.map((spec, index) => (
+                {Object.entries(car.specs).map(([key, value], index) => (
                   <div
                     key={index}
-                    className="flex justify-between border-b pb-3"
+                    className="flex justify-between tracking-widest border-b pb-3 text-end"
                   >
                     <span className="text-gray-600 font-medium">
-                      {spec.label}
+                      {key.toUpperCase()}
                     </span>
-                    <span className="text-gray-900 font-bold">
-                      {spec.value}
-                    </span>
+                    <span className="text-gray-900 font-bold">{value}</span>
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </ClientMotion>
 
             {/* Features */}
-            <motion.div
-              initial={hasMounted ? { opacity: 0, y: 20 } : false}
-              whileInView={hasMounted ? { opacity: 1, y: 0 } : undefined}
-              viewport={hasMounted ? { once: true } : undefined}
+            <ClientMotion
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ delay: 0.2 }}
             >
               <h2 className="text-2xl font-bold text-gray-900 mb-6">
@@ -252,11 +208,11 @@ export default function CarDetailPage() {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </ClientMotion>
           </div>
 
           {/* Availability */}
-          <motion.div
+          {/* <motion.div
             initial={hasMounted ? { opacity: 0, y: 20 } : false}
             whileInView={hasMounted ? { opacity: 1, y: 0 } : undefined}
             viewport={hasMounted ? { once: true } : undefined}
@@ -284,7 +240,7 @@ export default function CarDetailPage() {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </motion.div> */}
         </div>
       </section>
 

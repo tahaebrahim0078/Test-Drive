@@ -31,7 +31,7 @@ export interface fetchCarParams {
   brand?: string;
   model?: string;
   dealerId?: string;
-  limit?: number;
+  limit?: string;
   year?: string;
   page?: number;
 }
@@ -41,6 +41,13 @@ export interface CarCardProps {
   model: string;
   price: number;
   images: string[];
+}
+export interface paginationProps {
+  page: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  hasPrevPage: boolean;
+  hasNextPage: boolean;
 }
 export interface Booking {
   id: string;

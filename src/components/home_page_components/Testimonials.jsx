@@ -2,31 +2,11 @@
 import ClientMotion from "@/components/ClientMotion";
 import { motion } from "framer-motion";
 import { FiStar } from "react-icons/fi";
-import { itemVariants, containerVariants } from "@/utils/constants";
-
-const testimonials = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    role: "Marketing Manager",
-    rating: 5,
-    text: "Absolutely seamless experience! Booked a drive in minutes and the dealer was perfectly prepared. The platform made everything so simple.",
-  },
-  {
-    id: 2,
-    name: "Michael Chen",
-    role: "Software Engineer",
-    rating: 5,
-    text: "Found my dream car through DriveTest. The booking process was smooth and the dealer service exceeded my expectations. Highly recommended!",
-  },
-  {
-    id: 3,
-    name: "Emma Rodriguez",
-    role: "Business Consultant",
-    rating: 5,
-    text: "Perfect for busy professionals! I was able to compare multiple cars and book test drives without any hassle. The platform saved me hours of time.",
-  },
-];
+import {
+  itemVariants,
+  containerVariants,
+  testimonials,
+} from "@/utils/constants";
 
 export default function Testimonials() {
   return (

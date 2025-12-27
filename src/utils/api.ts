@@ -10,9 +10,12 @@ export async function fetchCars(params: fetchCarParams = {}) {
   const query = new URLSearchParams(
     Object.entries(params).filter(([_, value]) => value != null)
   ).toString();
-  return apiCall<Car[]>(`/customer/cars${query ? `?${query}` : ""}`);
+  const res = await fetch(
+    `http://localhost:4001/customer/cars${query ? `?${query}` : ""}`
+  );
+  if (!res.ok) throw new Error("Failed to fetch cars");
+  return res.json();
 }
-
 export async function fetchCarById(id: string) {
   try {
     return await apiCall<Car>(`/cars/${id}`);

@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "tmna.aemassets.toyota.com" },
       { protocol: "https", hostname: "www.mgmotor.com.eg" },
       { protocol: "https", hostname: "example.com" }, // 👈 مهم
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com", 
+        pathname: "/**",
+      },
     ],
   },
 };

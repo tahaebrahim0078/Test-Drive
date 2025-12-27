@@ -1,16 +1,15 @@
 import { BookingData, Car, fetchCarParams, ReviewData } from "@/types";
 import { apiCall } from "./apiCall";
 
-// Mock API functions - Replace with actual API calls when backend is ready
+// ===========================
+// Cars APIs
+// ===========================
+
 export async function fetchCars(params: fetchCarParams = {}) {
   const query = new URLSearchParams(
-    Object.entries(params).filter(([_, value]) => value != null) // nullish check
+    Object.entries(params).filter(([_, value]) => value != null)
   ).toString();
-  const res = await fetch(
-    `http://localhost:5000/customer/cars${query ? `?${query}` : ""}`
-  );
-  if (!res.ok) throw new Error("Failed to fetch cars");
-  return res.json();
+  return apiCall<Car[]>(`/customer/cars${query ? `?${query}` : ""}`);
 }
 
 export async function fetchCarById(id: string) {
@@ -22,13 +21,8 @@ export async function fetchCarById(id: string) {
   }
 }
 
-export async function fetchDealerCars(dealerId: string) {
-  try {
-    return await apiCall<Car[]>(`http://localhost:5000/dealer/cars`);
-  } catch (error) {
-    console.error("Error fetching dealer cars:", error);
-    return [];
-  }
+export async function fetchMyCars() {
+  return await apiCall<Car[]>("/dealer/me/cars");
 }
 
 // Dealer Car CRUD Operations
@@ -37,22 +31,19 @@ export async function createCar(
   carData: Omit<Car, "id" | "dealerId">
 ) {
   try {
-    return await apiCall<Car>("/cars", {
+    return await apiCall<Car>("/dealer/cars", {
       method: "POST",
-      body: JSON.stringify({
-        ...carData,
-        dealerId,
-      }),
+      body: JSON.stringify({ ...carData, dealerId }),
     });
   } catch (error) {
     console.error("Error creating car:", error);
     throw error;
   }
 }
-
+// Update car details
 export async function updateCar(carId: string, carData: Partial<Car>) {
   try {
-    return await apiCall<Car>(`/cars/${carId}`, {
+    return await apiCall<Car>(`/dealer/cars/${carId}`, {
       method: "PUT",
       body: JSON.stringify(carData),
     });
@@ -61,10 +52,10 @@ export async function updateCar(carId: string, carData: Partial<Car>) {
     throw error;
   }
 }
-
+// Delete a car
 export async function deleteCar(carId: string) {
   try {
-    return await apiCall<{ success: boolean }>(`/cars/${carId}`, {
+    return await apiCall<{ success: boolean }>(`/dealer/cars/${carId}`, {
       method: "DELETE",
     });
   } catch (error) {
@@ -73,7 +64,10 @@ export async function deleteCar(carId: string) {
   }
 }
 
+// ===========================
 // Booking APIs
+// ===========================
+
 export async function createBooking(bookingData: BookingData) {
   try {
     return await apiCall(`/bookings`, {
@@ -119,7 +113,10 @@ export async function updateBookingStatus(
   }
 }
 
+// ===========================
 // Review APIs
+// ===========================
+
 export async function submitReview(reviewData: ReviewData) {
   try {
     return await apiCall(`/reviews`, {

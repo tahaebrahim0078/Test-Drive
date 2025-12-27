@@ -18,7 +18,6 @@ type LoginForm = {
 };
 
 export default function LoginPage() {
-  console.log("LoginPage Rendering");
   const hasMounted = useHasMounted();
   const { login } = useAuth();
   const router = useRouter();
@@ -45,8 +44,6 @@ export default function LoginPage() {
     setError(null);
     setLoading(true);
 
-    console.log("Submitting Form Data:", formData);
-
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
         method: "POST",
@@ -55,9 +52,6 @@ export default function LoginPage() {
       });
 
       const data = await res.json();
-      console.log("API Response Data:", data);
-
-      console.log("API Response Data:", data.accessToken, data.user);
 
       if (!res.ok) {
         throw new Error(data?.message || "Login failed");
@@ -65,13 +59,10 @@ export default function LoginPage() {
 
       if (data.accessToken && data.user) {
         login(data.accessToken, data.user);
-
         router.push("/");
       } else {
         throw new Error("Invalid response from server");
       }
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -91,22 +82,18 @@ export default function LoginPage() {
             transition={{ duration: 0.5 }}
             className="bg-white rounded-lg shadow-xl p-8"
           >
-            {/* Header */}
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Sign In</h1>
               <p className="text-gray-600">Welcome back to DriveTest</p>
             </div>
 
-            {/* Error */}
             {error && (
               <div className="mb-4 text-sm text-red-600 bg-red-50 p-3 rounded">
                 {error}
               </div>
             )}
 
-            {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Role */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Login as
@@ -115,7 +102,7 @@ export default function LoginPage() {
                   name="role"
                   value={formData.role}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600  text-black"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 text-black"
                 >
                   <option value="customer">Customer</option>
                   <option value="dealer">Dealer</option>
@@ -147,22 +134,19 @@ export default function LoginPage() {
                 </label>
                 <div className="relative">
                   <FiLock className="absolute left-3 top-3 text-gray-400" />
-
                   <input
                     type={showPassword ? "text" : "password"}
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
                     placeholder="••••••••"
-                    className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600  text-black"
+                    className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 text-black"
                     required
                   />
-
                   <button
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
                     className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
-                    aria-label="Toggle password visibility"
                   >
                     {showPassword ? <FiEyeOff /> : <FiEye />}
                   </button>

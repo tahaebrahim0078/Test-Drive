@@ -6,9 +6,14 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import useHasMounted from "@/hooks/useHasMounted";
 import { FiMail, FiLock, FiUser } from "react-icons/fi";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   const hasMounted = useHasMounted();
+  const { login } = useAuth();
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,53 +21,64 @@ export default function RegisterPage() {
     confirmPassword: "",
     phone: "",
     role: "customer",
+    dealershipName: "",
+    dealershipLocation: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log(formData);
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    setError(null);
+
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match");
       return;
     }
 
+    setLoading(true);
+
     try {
       const res = await fetch(
-        `http://localhost:5000/auth/register/${formData.role}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/register/${formData.role}`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             name: formData.name,
             email: formData.email,
             phone: formData.phone,
             password: formData.password,
+            dealershipName: formData.dealershipName,
+            dealershipLocation: formData.dealershipLocation,
           }),
         }
       );
+
       const data = await res.json();
-      console.log(res);
+
       if (!res.ok) {
         throw new Error(data.message || "Registration failed");
       }
 
-      console.log("Registration successful:", data);
-      window.location.href = "/auth/login";
-    } catch (error: any) {
-      console.error("Register error:", error.message);
-      alert(error.message);
+      if (data.accessToken && data.user) {
+        login(data.accessToken, data.user);
+        router.push("/");
+      } else {
+        throw new Error("Invalid response from server");
+      }
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,7 +94,6 @@ export default function RegisterPage() {
             transition={{ duration: 0.6 }}
             className="bg-white rounded-lg shadow-xl p-8"
           >
-            {/* Header */}
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 Create Account
@@ -86,7 +101,12 @@ export default function RegisterPage() {
               <p className="text-gray-600">Join DriveTest today</p>
             </div>
 
-            {/* Form */}
+            {error && (
+              <div className="mb-4 text-sm text-red-600 bg-red-50 p-3 rounded">
+                {error}
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Name */}
               <div>
@@ -126,7 +146,7 @@ export default function RegisterPage() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="you@example.com"
-                    className="w-full text-black pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 text-black"
                     required
                   />
                 </div>
@@ -148,8 +168,9 @@ export default function RegisterPage() {
                   <option value="admin">Admin</option>
                 </select>
               </div>
+
+              {/* Phone */}
               <div>
-                {/* Phone Number */}
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Phone Number
                 </label>
@@ -161,13 +182,14 @@ export default function RegisterPage() {
                   <input
                     type="text"
                     name="phone"
-                    value={(formData as any).phone || ""}
+                    value={formData.phone}
                     onChange={handleChange}
                     placeholder="Your phone number"
                     className="w-full pl-10 text-black pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
                   />
                 </div>
               </div>
+
               {/* Password */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -211,17 +233,51 @@ export default function RegisterPage() {
                   />
                 </div>
               </div>
+              {/* Dealer Only Fields */}
+              {formData.role === "dealer" && (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Dealership Name
+                    </label>
+                    <input
+                      type="text"
+                      name="dealershipName"
+                      value={formData.dealershipName}
+                      onChange={handleChange}
+                      placeholder="Dealership name"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 text-black"
+                      required
+                    />
+                  </div>
 
-              {/* Submit Button */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Dealership Location
+                    </label>
+                    <input
+                      type="text"
+                      name="dealershipLocation"
+                      value={formData.dealershipLocation}
+                      onChange={handleChange}
+                      placeholder="City / Address"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 text-black"
+                      required
+                    />
+                  </div>
+                </>
+              )}
+
+              {/* Submit */}
               <button
                 type="submit"
+                disabled={loading}
                 className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition mt-6"
               >
-                Create Account
+                {loading ? "Creating account..." : "Create Account"}
               </button>
             </form>
 
-            {/* Link to Login */}
             <div className="text-center mt-6">
               <p className="text-gray-600">
                 Already have an account?{" "}

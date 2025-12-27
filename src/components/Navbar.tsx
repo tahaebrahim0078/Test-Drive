@@ -51,12 +51,12 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Right side buttons */}
+          {/* Right side buttons user.name is crypted */}
           <div className="hidden md:flex items-center gap-4">
             {isLoggedIn && user ? (
               <div className="flex items-center gap-4">
                 <span className="text-gray-700">
-                  {user.name} (
+                  {user.role} ( 
                   {user.role === "customer"
                     ? "Customer"
                     : user.role === "dealer"

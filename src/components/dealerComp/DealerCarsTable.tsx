@@ -3,22 +3,7 @@
 import { motion } from "framer-motion";
 import { FiEdit2, FiTrash2, FiImage } from "react-icons/fi";
 import Image from "next/image";
-
-interface Car {
-  id: string;
-  brand: string;
-  model: string;
-  year: number;
-  price: number;
-  images: string[];
-  specs: {
-    engine: string;
-    transmission: string;
-    fuelType: string;
-    horsepower: number;
-    color: string;
-  };
-}
+import { Car } from "@/app/dealer/dashboard/typesDealer";
 
 interface DealerCarsTableProps {
   cars: Car[];
@@ -74,7 +59,7 @@ export default function DealerCarsTable({
         <tbody>
           {cars.map((car, index) => (
             <motion.tr
-              key={car.id}
+              key={car._id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
@@ -120,9 +105,8 @@ export default function DealerCarsTable({
                     {car.specs.horsepower} hp
                   </p>
                   <p className="text-gray-600">
-                    <span className="font-medium">
-                      {car.specs.transmission}
-                    </span>
+                    <span className="font-medium">Transmission:</span>{" "}
+                    {car.specs.transmission}
                   </p>
                 </div>
               </td>
@@ -151,9 +135,8 @@ export default function DealerCarsTable({
                         confirm(
                           `Are you sure you want to delete ${car.brand} ${car.model}?`
                         )
-                      ) {
-                        onDelete(car.id);
-                      }
+                      )
+                        onDelete(car._id!);
                     }}
                     disabled={isLoading}
                     className="p-2 bg-red-500 hover:bg-red-600 disabled:bg-gray-400 text-white rounded-lg transition"

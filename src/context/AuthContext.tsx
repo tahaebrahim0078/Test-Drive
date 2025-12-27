@@ -19,7 +19,7 @@ interface AuthContextType {
   isLoggedIn: boolean;
   isLoading: boolean;
   setUser: (user: User | null) => void;
-  login: (email: string, password: string, role: UserRole) => void;
+  login: (token: string, user: User) => void; // 🔹 ياخد token و user من السيرفر
   logout: () => void;
   checkAuth: () => void;
 }
@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 🔹 check auth on refresh
+  // 🔹 تحقق من وجود user و token في localStorage
   const checkAuth = () => {
     try {
       const storedUser = localStorage.getItem("user");
@@ -56,25 +56,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     checkAuth();
   }, []);
 
-  const login = (email: string, password: string, userRole: UserRole) => {
-    // ⚠️ mock login (بدل API)
-    const userData: User = {
-      id: Math.random().toString(36).slice(2),
-      name: email.split("@")[0],
-      email,
-      role: userRole,
-    };
-
-    const token = "mock-token";
-
+  // 🔹 تسجيل الدخول: حفظ token و user في localStorage
+  const login = (token: string, userData: User) => {
     setUser(userData);
-    setRole(userRole);
+    setRole(userData.role);
     setIsLoggedIn(true);
 
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("token", token);
   };
 
+  // 🔹 تسجيل الخروج: مسح user و token
   const logout = () => {
     setUser(null);
     setRole(null);

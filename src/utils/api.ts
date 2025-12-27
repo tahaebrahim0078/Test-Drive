@@ -10,11 +10,7 @@ export async function fetchCars(params: fetchCarParams = {}) {
   const query = new URLSearchParams(
     Object.entries(params).filter(([_, value]) => value != null)
   ).toString();
-  const res = await fetch(
-    `http://localhost:4001/customer/cars${query ? `?${query}` : ""}`
-  );
-  if (!res.ok) throw new Error("Failed to fetch cars");
-  return res.json();
+  return apiCall<Car[]>(`/customer/cars${query ? `?${query}` : ""}`);
 }
 export async function fetchCarById(id: string) {
   try {
@@ -37,7 +33,7 @@ export async function createCar(dealerId: string, payload: CarPayload) {
     );
 
     const images = [...(payload.images || []), ...uploadedImages];
-   
+
     return await apiCall<Car>("/dealer/cars", {
       method: "POST",
       body: JSON.stringify({
@@ -66,7 +62,7 @@ export async function updateCar(carId: string, payload: CarPayload) {
       body: JSON.stringify({
         ...payload,
         images,
-        newImages: undefined, // remove newImages from payload to avoid confusion 
+        newImages: undefined, // remove newImages from payload to avoid confusion
       }),
     });
   } catch (error) {

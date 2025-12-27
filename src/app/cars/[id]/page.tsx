@@ -191,7 +191,7 @@ export default function CarDetailPage() {
             </ClientMotion>
 
             {/* Features */}
-            <ClientMotion
+            {/* <ClientMotion
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -208,7 +208,7 @@ export default function CarDetailPage() {
                   </div>
                 ))}
               </div>
-            </ClientMotion>
+            </ClientMotion> */}
           </div>
 
           {/* Availability */}

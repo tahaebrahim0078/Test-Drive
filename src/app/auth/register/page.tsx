@@ -6,13 +6,13 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import useHasMounted from "@/hooks/useHasMounted";
 import { FiMail, FiLock, FiUser } from "react-icons/fi";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export default function RegisterPage() {
   const router = useRouter();
   const login = useAuth().login;
   const hasMounted = useHasMounted();
-  const { login } = useAuth();
-  const router = useRouter();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -37,7 +37,8 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     console.log(formData);
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    setError(null);
+
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match");
       return;
@@ -47,7 +48,7 @@ export default function RegisterPage() {
 
     try {
       const res = await fetch(
-        `http://localhost:4001/auth/register/${formData.role}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/register/${formData.role}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -63,16 +64,21 @@ export default function RegisterPage() {
       );
 
       const data = await res.json();
-      console.log(res);
+
       if (!res.ok) {
         throw new Error(data.message || "Registration failed");
       }
 
-      console.log("Registration successful:", data);
-      window.location.href = "/auth/login";
-    } catch (error: any) {
-      console.error("Register error:", error.message);
-      alert(error.message);
+      if (data.accessToken && data.user) {
+        login(data.accessToken, data.user);
+        router.push("/");
+      } else {
+        throw new Error("Invalid response from server");
+      }
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 

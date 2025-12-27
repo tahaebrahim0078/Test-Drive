@@ -20,9 +20,7 @@ import {
   fetchDealerBookings,
   updateBookingStatus,
 } from "@/utils/api";
-import { BookingRequest, Car } from "./typesDealer";
-
-/* ===================== COMPONENT ===================== */
+import { BookingRequest, Car, CarPayload } from "./typesDealer";
 
 export default function DealerDashboard() {
   const hasMounted = useHasMounted();
@@ -36,7 +34,6 @@ export default function DealerDashboard() {
   const [showAddCarForm, setShowAddCarForm] = useState(false);
   const [editingCar, setEditingCar] = useState<Car | null>(null);
 
-  /* ===================== LOAD DATA ===================== */
   useEffect(() => {
     if (!user) return;
 
@@ -46,7 +43,7 @@ export default function DealerDashboard() {
         setError(null);
 
         const [carsData, bookingsData] = await Promise.all([
-          fetchMyCars(), 
+          fetchMyCars(),
           fetchDealerBookings(user.id),
         ]);
 
@@ -63,24 +60,23 @@ export default function DealerDashboard() {
     loadData();
   }, [user]);
 
-  /* ===================== CAR ACTIONS ===================== */
-  const handleCarSubmit = async (carData: Omit<Car, "_id">) => {
+  // ================= CAR SUBMIT =================
+  const handleCarSubmit = async (data: CarPayload) => {
     if (!user) return;
 
     try {
       setIsLoading(true);
       setError(null);
 
-      // ✅ إضافة isActive
-      const payload: CarPayload = { ...carData, isActive: true };
+      data.isActive = true;
 
       if (editingCar) {
-        const updated = await updateCar(editingCar._id!, payload);
+        const updated = await updateCar(editingCar._id!, data);
         setCars((prev) =>
           prev.map((c) => (c._id === editingCar._id ? updated : c))
         );
       } else {
-        const newCar = await createCar(user.id, payload);
+        const newCar = await createCar(user.id, data);
         setCars((prev) => [...prev, newCar]);
       }
 
@@ -108,7 +104,6 @@ export default function DealerDashboard() {
     }
   };
 
-  /* ===================== BOOKINGS ===================== */
   const handleBookingAction = async (
     bookingId: string,
     status: "accepted" | "rejected"
@@ -128,7 +123,6 @@ export default function DealerDashboard() {
     }
   };
 
-  /* ===================== STATS ===================== */
   const stats = [
     {
       label: "Available Cars",
@@ -158,7 +152,6 @@ export default function DealerDashboard() {
     },
   ];
 
-  /* ===================== UI ===================== */
   return (
     <ProtectedRoute allowedRoles={["dealer"]}>
       <div className="min-h-screen flex flex-col bg-linear-to-br from-gray-50 to-gray-100">
@@ -180,7 +173,6 @@ export default function DealerDashboard() {
               </p>
             </ClientMotion>
 
-            {/* Error */}
             {error && (
               <motion.div className="mb-6 p-4 bg-red-50 border rounded-lg flex gap-3">
                 <FiAlertCircle className="text-red-600" size={22} />
@@ -188,7 +180,6 @@ export default function DealerDashboard() {
               </motion.div>
             )}
 
-            {/* Loading */}
             {isLoading && cars.length === 0 && (
               <div className="flex justify-center py-12">
                 <FiLoader className="animate-spin" size={40} />
@@ -197,7 +188,6 @@ export default function DealerDashboard() {
 
             {!isLoading && (
               <>
-                {/* Stats */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                   {stats.map((stat, i) => (
                     <ClientMotion
@@ -215,7 +205,6 @@ export default function DealerDashboard() {
                   ))}
                 </div>
 
-                {/* Cars */}
                 <div className="bg-white rounded-xl shadow p-8 mb-8">
                   <div className="flex justify-between mb-6">
                     <h2 className="text-2xl text-black font-bold">
@@ -252,12 +241,10 @@ export default function DealerDashboard() {
                   />
                 </div>
 
-                {/* Bookings */}
                 <div className="bg-white rounded-xl shadow p-8">
                   <h2 className="text-2xl font-bold mb-6">
                     Booking Requests ({bookings.length})
                   </h2>
-
                   <DealerBookingsList
                     bookings={bookings}
                     onAccept={(id) => handleBookingAction(id, "accepted")}

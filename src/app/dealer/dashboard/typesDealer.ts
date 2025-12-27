@@ -7,7 +7,7 @@ export interface CarSpecs {
 }
 
 export interface Car {
-  _id?: string; 
+  _id?: string;
   brand: string;
   model: string;
   year: number;
@@ -23,6 +23,9 @@ export interface CarPayload {
   price: number;
   images: string[];
   specs: CarSpecs;
+ 
+  newImages?: File[]; 
+  isActive?: boolean;
 }
 
 export interface BookingRequest {

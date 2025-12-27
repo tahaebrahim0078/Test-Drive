@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.12",
+    "browser-image-compression": "^2.0.2",
     "framer-motion": "^12.23.25",
     "next": "16.0.8",
     "react": "19.2.1",

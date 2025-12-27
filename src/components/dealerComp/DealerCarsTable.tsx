@@ -73,6 +73,7 @@ export default function DealerCarsTable({
                       src={car.images[0]}
                       alt={`${car.brand} ${car.model}`}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 20vw"
                       className="object-cover"
                     />
                   ) : (

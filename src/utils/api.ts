@@ -1,5 +1,6 @@
 import { BookingData, Car, fetchCarParams, ReviewData } from "@/types";
 import { apiCall } from "./apiCall";
+import { CarPayload } from "@/app/dealer/dashboard/typesDealer";
 
 // ===========================
 // Cars APIs
@@ -26,33 +27,51 @@ export async function fetchMyCars() {
 }
 
 // Dealer Car CRUD Operations
-export async function createCar(
-  dealerId: string,
-  carData: Omit<Car, "id" | "dealerId">
-) {
+export async function createCar(dealerId: string, payload: CarPayload) {
   try {
+    const uploadedImages = await Promise.all(
+      (payload.newImages || []).map((file) => uploadImageToCloudinary(file))
+    );
+
+    const images = [...(payload.images || []), ...uploadedImages];
+   
     return await apiCall<Car>("/dealer/cars", {
       method: "POST",
-      body: JSON.stringify({ ...carData, dealerId }),
+      body: JSON.stringify({
+        ...payload,
+        dealerId,
+        images,
+        newImages: undefined, // remove newImages from payload to avoid confusion
+      }),
     });
   } catch (error) {
     console.error("Error creating car:", error);
     throw error;
   }
 }
-// Update car details
-export async function updateCar(carId: string, carData: Partial<Car>) {
+
+export async function updateCar(carId: string, payload: CarPayload) {
   try {
+    const uploadedImages = await Promise.all(
+      (payload.newImages || []).map((file) => uploadImageToCloudinary(file))
+    );
+
+    const images = [...(payload.images || []), ...uploadedImages];
+
     return await apiCall<Car>(`/dealer/cars/${carId}`, {
       method: "PUT",
-      body: JSON.stringify(carData),
+      body: JSON.stringify({
+        ...payload,
+        images,
+        newImages: undefined, // remove newImages from payload to avoid confusion 
+      }),
     });
   } catch (error) {
     console.error("Error updating car:", error);
     throw error;
   }
 }
-// Delete a car
+
 export async function deleteCar(carId: string) {
   try {
     return await apiCall<{ success: boolean }>(`/dealer/cars/${carId}`, {
@@ -136,4 +155,7 @@ export async function fetchCarReviews(carId: string) {
     console.error("Error fetching reviews:", error);
     return [];
   }
+}
+function uploadImageToCloudinary(file: File): any {
+  throw new Error("Function not implemented.");
 }

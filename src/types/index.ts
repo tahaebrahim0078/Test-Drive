@@ -13,6 +13,8 @@ export interface Car {
   features?: string[];
   rating?: number;
   reviews?: number;
+  dealer?: Dealer;
+  
 }
 
 export interface Spec {

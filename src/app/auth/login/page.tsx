@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 type LoginForm = {
   email: string;
   password: string;
-  role: "customer" | "dealer" | "admin";
+  role?: "customer" | "dealer";
 };
 
 export default function LoginPage() {
@@ -25,7 +25,7 @@ export default function LoginPage() {
   const [formData, setFormData] = useState<LoginForm>({
     email: "",
     password: "",
-    role: "customer",
+  
   });
 
   const [showPassword, setShowPassword] = useState(false);

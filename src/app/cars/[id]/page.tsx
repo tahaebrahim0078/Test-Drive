@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import { useState } from "react";
 import { useParams } from "next/navigation";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiMapPin } from "react-icons/fi";
 import ClientMotion from "@/components/ClientMotion";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
@@ -139,20 +139,20 @@ export default function CarDetailPage() {
               <p className="text-gray-700 mb-8">{car.description}</p>
 
               {/* Dealer Info */}
-              {/* <div className="bg-gray-50 p-4 rounded-lg mb-8">
+              <div className="bg-gray-50 p-4 rounded-lg mb-8">
                 <h3 className="font-bold text-gray-900 mb-3">
                   Dealer Information
                 </h3>
                 <div className="space-y-2">
                   <p className="text-gray-700 font-semibold">
-                    {car.dealer.name}
+                    {car.dealer?.name ??"unknown dealer"}
                   </p>
                   <p className="text-gray-600 flex items-center gap-2">
                     <FiMapPin size={16} />
-                    {car.dealer.location}
+                    {car.dealer?.location??"unknown location"}
                   </p>
                 </div>
-              </div> */}
+              </div>
 
               {/* Book Button */}
               <Link
@@ -191,7 +191,7 @@ export default function CarDetailPage() {
             </ClientMotion>
 
             {/* Features */}
-            {/* <ClientMotion
+            <ClientMotion
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -208,7 +208,7 @@ export default function CarDetailPage() {
                   </div>
                 ))}
               </div>
-            </ClientMotion> */}
+            </ClientMotion>
           </div>
 
           {/* Availability */}

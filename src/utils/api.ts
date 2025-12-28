@@ -6,7 +6,7 @@ import { CarPayload } from "@/app/dealer/dashboard/typesDealer";
 // Cars APIs
 // ===========================
 
-export async function fetchCars(params: fetchCarParams = {}) {
+export async function fetchCars(params: fetchCarParams = {}): Promise<any> {
   const query = new URLSearchParams(
     Object.entries(params).filter(([_, value]) => value != null)
   ).toString();
@@ -14,7 +14,7 @@ export async function fetchCars(params: fetchCarParams = {}) {
 }
 export async function fetchCarById(id: string) {
   try {
-    return await apiCall<Car>(`/cars/${id}`);
+    return await apiCall<Car>(`/customer/cars/${id}`);
   } catch (error) {
     console.error("Error fetching car:", error);
     throw error;

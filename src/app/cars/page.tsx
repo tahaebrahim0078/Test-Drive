@@ -13,6 +13,7 @@ import PaginationButtons from "@/components/home_page_components/PaginationButto
 import { useRouter } from "next/navigation";
 import LoadingState from "@/components/sharedComponents/LoadingState";
 import ErrorState from "@/components/sharedComponents/ErrorState";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 export default function CarsPage() {
   const router = useRouter();
@@ -54,6 +55,7 @@ export default function CarsPage() {
     router.push(`?${params.toString()}`);
   };
 
+
   const applyFilters = () => {
     const parsed = Object.fromEntries(
       Object.entries(filterOptions)
@@ -83,9 +85,10 @@ export default function CarsPage() {
     return <LoadingState />;
   }
   if (error) return <ErrorState message={String(error)} />;
+  console.log(carsToRender);
 
   return (
-    <main>
+  <ProtectedRoute allowedRoles={["customer"]}> <main>
       <Navbar />
 
       {/* Header */}
@@ -106,7 +109,7 @@ export default function CarsPage() {
               className="flex-1 px-3 py-2 outline-none text-gray-800"
             />
           </div>
-          {/* Filter Panel */}
+         
           <section className="bg-white border border-gray-100 py-8 rounded-3xl mb-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <motion.div
@@ -233,6 +236,8 @@ export default function CarsPage() {
         </div>
       </section>
       <Footer />
-    </main>
+    </main> 
+    </ ProtectedRoute>
+    
   );
 }

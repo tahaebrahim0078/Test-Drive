@@ -14,7 +14,6 @@ export interface Car {
   rating?: number;
   reviews?: number;
   dealer?: Dealer;
-  
 }
 
 export interface Spec {

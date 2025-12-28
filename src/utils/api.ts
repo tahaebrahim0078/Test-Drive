@@ -1,6 +1,10 @@
 import { BookingData, Car, fetchCarParams, ReviewData } from "@/types";
 import { apiCall } from "./apiCall";
-import { CarPayload } from "@/app/dealer/dashboard/typesDealer";
+import {
+  BookingRequest,
+  CarPayload,
+  DealerBookingsResponse,
+} from "@/app/dealer/dashboard/typesDealer";
 
 // ===========================
 // Cars APIs
@@ -20,7 +24,7 @@ export async function fetchCarById(id: string) {
     throw error;
   }
 }
-
+// Fetch cars for a specific dealer
 export async function fetchMyCars() {
   return await apiCall<Car[]>("/dealer/me/cars");
 }
@@ -38,7 +42,7 @@ export async function createCar(dealerId: string, payload: CarPayload) {
       method: "POST",
       body: JSON.stringify({
         ...payload,
-        dealerId,
+
         images,
         newImages: undefined, // remove newImages from payload to avoid confusion
       }),
@@ -106,30 +110,33 @@ export async function fetchUserBookings(userId: string) {
     return [];
   }
 }
-
-export async function fetchDealerBookings(dealerId: string) {
+// Fetch bookings for dealer
+export async function fetchDealerBookings() {
   try {
-    return await apiCall(`/dealers/${dealerId}/bookings`);
+    const data = await apiCall<{ count: number; bookings: BookingRequest[] }>(
+      "/dealer/bookings"
+    );
+    return data.bookings || [];
   } catch (error) {
     console.error("Error fetching dealer bookings:", error);
     return [];
   }
 }
 
-export async function updateBookingStatus(
-  bookingId: string,
-  status: "accepted" | "rejected" | "cancelled"
-) {
-  try {
-    return await apiCall(`/bookings/${bookingId}`, {
-      method: "PATCH",
-      body: JSON.stringify({ status }),
-    });
-  } catch (error) {
-    console.error("Error updating booking:", error);
-    throw error;
-  }
-}
+// export async function updateBookingStatus(
+//   bookingId: string,
+//   status: "accepted" | "rejected" | "cancelled"
+// ) {
+//   try {
+//     return await apiCall(`/bookings/${bookingId}`, {
+//       method: "PATCH",
+//       body: JSON.stringify({ status }),
+//     });
+//   } catch (error) {
+//     console.error("Error updating booking:", error);
+//     throw error;
+//   }
+// }
 
 // ===========================
 // Review APIs

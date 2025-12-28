@@ -5,7 +5,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 export type UserRole = "customer" | "dealer" | "admin" | null;
 
 interface User {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   role: UserRole;
@@ -19,7 +19,7 @@ interface AuthContextType {
   isLoggedIn: boolean;
   isLoading: boolean;
   setUser: (user: User | null) => void;
-  login: (token: string, user: User) => void; // 🔹 ياخد token و user من السيرفر
+  login: (token: string, user: User) => void; 
   logout: () => void;
   checkAuth: () => void;
 }

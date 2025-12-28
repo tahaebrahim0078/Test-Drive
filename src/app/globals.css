@@ -1,48 +1,150 @@
 @import "tailwindcss";
 
+/* =========================
+   Root Theme (Glass Dark)
+========================= */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-main: #020617;
+  --bg-glass: rgba(255, 255, 255, 0.06);
+  --bg-glass-strong: rgba(255, 255, 255, 0.1);
+  --border-glass: rgba(255, 255, 255, 0.12);
+
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+
+  --accent: #f97316; /* orange */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* =========================
+   Base
+========================= */
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: radial-gradient(
+      1200px circle at 10% 10%,
+      rgba(249, 115, 22, 0.08),
+      transparent 40%
+    ),
+    linear-gradient(to bottom right, #0b1220, #020617, #020617);
+  color: var(--text-primary);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
 }
 
-@layer components {
-  .main-btn {
-    @apply flex items-center justify-center gap-2 bg-red-600 hover:bg-red-950 text-white font-bold px-8 py-3 rounded-xl transition-all active:scale-95 shadow-lg shadow-blue-200;
+/* Smooth feel */
+* {
+  scroll-behavior: smooth;
+}
+
+/* =========================
+   Glass Utilities
+========================= */
+@layer utilities {
+  .glass {
+    background: var(--bg-glass);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--border-glass);
   }
+
+  .glass-strong {
+    background: var(--bg-glass-strong);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid var(--border-glass);
+  }
+
+  .glass-hover {
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .glass-hover:hover {
+    transform: translateY(-6px) scale(1.02);
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* =========================
+   Components
+========================= */
+@layer components {
+  /* ===== Buttons ===== */
+  .main-btn {
+    @apply flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-white;
+    background: linear-gradient(135deg, #f97316, #fb923c);
+    box-shadow: 0 12px 30px rgba(249, 115, 22, 0.35);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .main-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgba(249, 115, 22, 0.45);
+  }
+
+  .main-btn:active {
+    transform: scale(0.96);
+  }
+
+  /* ===== Inputs ===== */
   .filter-label {
-    @apply text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1;
+    @apply text-[11px] font-semibold uppercase tracking-widest ml-1;
+    color: var(--text-secondary);
   }
 
   .filter-input {
-    @apply px-4 py-2.5 bg-gray-50 border border-gray-200 text-gray-700 
-             placeholder-gray-400 rounded-xl focus:bg-white focus:ring-4 
-             focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all;
+    @apply px-4 py-2.5 rounded-xl outline-none transition-all text-sm;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: white;
+    backdrop-filter: blur(18px);
   }
+
+  .filter-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .filter-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.25);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  /* ===== Pagination ===== */
   .pagination-prev,
   .pagination-next {
-    @apply flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl 
-           font-bold transition-all active:scale-95 disabled:opacity-30 
-           disabled:pointer-events-none disabled:grayscale shadow-sm;
+    @apply flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl font-semibold;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .pagination-prev {
-    @apply bg-white border border-gray-200 text-gray-700 hover:bg-gray-50;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: white;
+  }
+
+  .pagination-prev:hover {
+    background: rgba(255, 255, 255, 0.08);
   }
 
   .pagination-next {
-    @apply bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-100;
+    background: linear-gradient(135deg, #f97316, #fb923c);
+    color: white;
+    box-shadow: 0 10px 28px rgba(249, 115, 22, 0.35);
+  }
+
+  .pagination-next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px rgba(249, 115, 22, 0.45);
+  }
+
+  .pagination-prev:active,
+  .pagination-next:active {
+    transform: scale(0.95);
+  }
+
+  .pagination-prev:disabled,
+  .pagination-next:disabled {
+    opacity: 0.35;
+    pointer-events: none;
   }
 }

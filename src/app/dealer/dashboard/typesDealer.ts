@@ -8,12 +8,15 @@ export interface CarSpecs {
 
 export interface Car {
   _id?: string;
+  name?: string; // لو موجود في API
   brand: string;
   model: string;
-  year: number;
+  year?: number; // خليها optional
+  category?: string; // لو موجود
   price: number;
   images: string[];
   specs: CarSpecs;
+  isActive?: boolean;
 }
 
 export interface CarPayload {
@@ -23,32 +26,42 @@ export interface CarPayload {
   price: number;
   images: string[];
   specs: CarSpecs;
- 
-  newImages?: File[]; 
+  newImages?: File[];
   isActive?: boolean;
 }
 
+/**
+ * READ-ONLY Booking (Dealer just views requests)
+ */
 export interface BookingRequest {
-  id: string;
-  customerName: string;
-  customerEmail: string;
-  carId: string;
-  carName: string;
-  date: string;
-  time: string;
-  status: "pending" | "accepted" | "rejected";
+  _id: string;
+  car: {
+    _id: string;
+    brand: string;
+    model: string;
+    year?: number;
+  };
+  dealer: string;
+  bookedBy: {
+    _id: string;
+    name: string;
+    email: string;
+    phone?: string;
+  };
+  startTime: string;
+  endTime: string;
+  isBooked: boolean;
+  createdAt: string;
+  updatedAt: string;
   notes?: string;
-}
-
-export interface ReviewData {
-  carId: string;
-  userId: string;
-  rating: number;
-  comment: string;
 }
 
 export interface fetchCarParams {
   brand?: string;
   model?: string;
   year?: number;
+}
+export interface DealerBookingsResponse {
+  count: number;
+  bookings: BookingRequest[];
 }

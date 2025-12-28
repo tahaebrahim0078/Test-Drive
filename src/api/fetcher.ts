@@ -1,25 +1,27 @@
-import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL!;
 
-const api: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+export async function fetcher<T>(
+  url: string,
+  options?: RequestInit
+): Promise<T> {
+  const token =
+    typeof window !== "undefined"
+      ? localStorage.getItem("token")
+      : null;
 
-api.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    const token =
-      typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const res = await fetch(`${BASE_URL}${url}`, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
+      ...options?.headers,
+    },
+  });
 
-    if (token) {
-      // Axios v1+: headers دايمًا موجودة هنا
-      config.headers.set("Authorization", `Bearer ${token}`);
-    }
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.message || "Something went wrong");
+  }
 
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-export default api;
+  return res.json();
+}

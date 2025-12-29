@@ -1,9 +1,11 @@
+"use client";
 import ClientMotion from "@/components/ClientMotion";
 import Image from "next/image";
 import homepageImg from "../../../public/images/HomeImage.jpeg";
 import Link from "next/link";
-
+import { useAuth } from "@/context/AuthContext";
 export default function HeroSection() {
+  const { isLoggedIn } = useAuth();
   return (
     <section className="bg-linear-to-r from-gray-50 to-gray-100 pt-20 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -48,12 +50,14 @@ export default function HeroSection() {
               >
                 Browse Cars
               </Link>
-              <Link
-                href="/auth/register"
-                className="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white font-bold py-3 px-8 rounded-lg transition inline-block text-center"
-              >
-                Register Now
-              </Link>
+              {!isLoggedIn && (
+                <Link
+                  href="/auth/register"
+                  className="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white font-bold py-3 px-8 rounded-lg transition inline-block text-center"
+                >
+                  Register Now
+                </Link>
+              )}
             </div>
           </ClientMotion>
 
@@ -71,6 +75,7 @@ export default function HeroSection() {
                 height={500}
                 alt="Luxury Car"
                 className="w-full h-full object-cover "
+                priority
               />
             </div>
           </ClientMotion>

@@ -1,39 +1,8 @@
 "use client";
 import ClientMotion from "@/components/ClientMotion";
 import { motion } from "framer-motion";
-import { itemVariants, containerVariants } from "@/utils/constants";
+import { itemVariants, containerVariants, partners } from "@/utils/constants";
 import Image from "next/image";
-import audiLogo from "@/../public/images/audiLogo.png";
-import bmwLogo from "@/../public/images/bmwLogo.png";
-import mercedesLogo from "@/../public/images/mercedesLogo.png";
-import teslaLogo from "@/../public/images/teslaLogo.png";
-
-const partners = [
-  {
-    id: 1,
-    name: "BMW Downtown",
-    description: "Premium BMW Experience",
-    image: bmwLogo,
-  },
-  {
-    id: 2,
-    name: "Mercedes Central",
-    description: "Luxury Mercedes Collection",
-    image: mercedesLogo,
-  },
-  {
-    id: 3,
-    name: "Audi Prestige",
-    description: "Innovation & Performance",
-    image: audiLogo,
-  },
-  {
-    id: 4,
-    name: "Tesla",
-    description: "Electric Future",
-    image: teslaLogo,
-  },
-];
 
 export default function Partners() {
   return (

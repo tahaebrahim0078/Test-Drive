@@ -25,7 +25,6 @@ export default function LoginPage() {
   const [formData, setFormData] = useState<LoginForm>({
     email: "",
     password: "",
-  
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -45,7 +44,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

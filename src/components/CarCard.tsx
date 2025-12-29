@@ -65,7 +65,7 @@ export default function CarCard({
           </div>
         </div>
 
-        <Link href={`/cars/${_id}`} className="main-btn">
+        <Link href={`/cars/${_id}`} className="main-car-btn">
           View Details
         </Link>
       </div>

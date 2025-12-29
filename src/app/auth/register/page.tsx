@@ -48,7 +48,7 @@ export default function RegisterPage() {
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/register/${formData.role}`,
+        `${process.env.NEXT_PUBLIC_API_URL}auth/register/${formData.role}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -165,7 +165,6 @@ export default function RegisterPage() {
                 >
                   <option value="customer">Customer</option>
                   <option value="dealer">Dealer</option>
-                  
                 </select>
               </div>
 

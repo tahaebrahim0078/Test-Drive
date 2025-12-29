@@ -32,6 +32,9 @@ export default function DealerCarForm({
       fuelType: "",
       horsepower: 0,
       color: "",
+      acceleration: 0,
+      torque: 0,
+      drivetrain: "",
     }
   );
   const [existingImages, setExistingImages] = useState<string[]>(
@@ -162,29 +165,45 @@ export default function DealerCarForm({
 
       {/* Specs */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        {["engine", "transmission", "fuelType", "horsepower", "color"].map(
-          (field) => (
-            <div key={field}>
-              <label className="block text-gray-700 font-medium mb-1">
-                {field.charAt(0).toUpperCase() + field.slice(1)}
-              </label>
-              <input
-                type={field === "horsepower" ? "number" : "text"}
-                value={(specs as any)[field]}
-                onChange={(e) =>
-                  setSpecs({
-                    ...specs,
-                    [field]:
-                      field === "horsepower"
-                        ? Number(e.target.value)
-                        : e.target.value,
-                  })
-                }
-                className="w-full rounded-xl border border-gray-300/30 bg-white/30 backdrop-blur-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-400"
-              />
-            </div>
-          )
-        )}
+        {[
+          "engine",
+          "transmission",
+          "fuelType",
+          "horsepower",
+          "color",
+          "acceleration",
+          "torque",
+          "drivetrain",
+          "cartype",
+        ].map((field) => (
+          <div key={field}>
+            <label className="block text-gray-700 font-medium mb-1">
+              {field.charAt(0).toUpperCase() + field.slice(1)}
+            </label>
+            <input
+              type={
+                field === "horsepower" ||
+                field === "acceleration" ||
+                field === "torque"
+                  ? "number"
+                  : "text"
+              }
+              value={(specs as any)[field]}
+              onChange={(e) =>
+                setSpecs({
+                  ...specs,
+                  [field]:
+                    field === "horsepower" ||
+                    field === "acceleration" ||
+                    field === "torque"
+                      ? Number(e.target.value)
+                      : e.target.value,
+                })
+              }
+              className="w-full rounded-xl border border-gray-300/30 bg-white/30 backdrop-blur-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-400"
+            />
+          </div>
+        ))}
       </div>
 
       {/* Images */}

@@ -8,10 +8,11 @@ import { fetchCars } from "@/utils/api";
 import LoadingState from "../sharedComponents/LoadingState";
 import ErrorState from "../sharedComponents/ErrorState";
 import { FiArrowRight, FiInfo } from "react-icons/fi";
+import { Car, carApiResponse } from "@/types/index";
 
 export default function CarPreview() {
-  const [selectedCar, setSelectedCar] = React.useState(null);
-  const { data, isLoading, error } = useQuery({
+  const [selectedCar, setSelectedCar] = React.useState<Car | null>(null);
+  const { data, isLoading, error } = useQuery<carApiResponse>({
     queryKey: ["cars"],
     queryFn: async () => await fetchCars(),
   });
@@ -26,8 +27,8 @@ export default function CarPreview() {
   if (error) return <ErrorState message={String(error)} />;
   if (!selectedCar) return null;
 
-  const cars = data?.data;
-
+  const cars = data?.data || [];
+  console.log(cars);
   return (
     <section className="relative bg-gradient-to-b from-gray-50 to-[#efefef] overflow-hidden py-20">
       <div className="absolute top-20 left-1/2 -translate-x-1/2 select-none pointer-events-none">
@@ -79,9 +80,9 @@ export default function CarPreview() {
               animate={{ opacity: 1, y: 0 }}
             >
               {/* dealer name should appear here */}
-              {/* <span className="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg shadow-orange-200">
-                {selectedCar.dealer.name}
-              </span> */}
+              <span className="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg shadow-orange-200">
+                {selectedCar.dealer?.dealershipName}
+              </span>
               <h1 className="text-5xl md:text-7xl font-black text-gray-900 mt-4 leading-none">
                 {selectedCar.brand} <br />
                 <span className="text-orange-500">{selectedCar.model}</span>
@@ -115,18 +116,15 @@ export default function CarPreview() {
             <span className="font-bold text-gray-400 text-xs uppercase tracking-widest">
               Technical Specs
             </span>
-            <div className="bg-orange-100 text-orange-600 text-xs font-black px-2 py-1 rounded-md">
-              ⭐ 4.5
-            </div>
           </div>
 
           <div className="grid grid-cols gap-y-4 gap-x-2">
             <ul className="mt-3 grid grid-cols-2 gap-2 text-xs text-gray-600">
-              <li>Tank: {selectedCar.specs.tankcapacity} L</li>
+              <li>Type: {selectedCar.specs.cartype}</li>
               <li>Power: {selectedCar.specs.horsepower} hp</li>
-              <li>Torque: {selectedCar.specs.torque}</li>
-              <li>0-100 km/h: {selectedCar.specs.acceleration} s</li>
-              <li>DriveType: {selectedCar.specs.drivetype}</li>
+              <li>Torque: {selectedCar.specs.torque} nm</li>
+              <li>0-60 km/h: {selectedCar.specs.acceleration} s</li>
+              <li>Drive Type: {selectedCar.specs.drivetrain}</li>
             </ul>
           </div>
         </motion.div>
@@ -136,7 +134,7 @@ export default function CarPreview() {
             Select to Preview
           </p>
           <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
-            {cars.slice(0, 4).map((car) => (
+            {cars.slice(0, 4).map((car: Car) => (
               <button
                 key={car._id}
                 onClick={() => setSelectedCar(car)}

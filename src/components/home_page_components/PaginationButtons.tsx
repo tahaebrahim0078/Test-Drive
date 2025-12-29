@@ -15,7 +15,7 @@ function PaginationButtons({
       <button
         disabled={page === 1}
         onClick={() => hasPrevPage && onPageChange(page - 1)}
-        className="pagination-prev"
+        className="pagination-car-prev"
       >
         <FiChevronLeft size={20} />
       </button>
@@ -36,7 +36,7 @@ function PaginationButtons({
       <button
         disabled={page === totalPages}
         onClick={() => hasNextPage && onPageChange(page + 1)}
-        className="pagination-next"
+        className="pagination-car-next"
       >
         <FiChevronRight size={20} />
       </button>

@@ -15,18 +15,19 @@ export interface Car {
   reviews?: number;
   dealer?: Dealer;
 }
-
 export interface Spec {
   transmission: string;
   color: string;
   acceleration: number;
-  drivetype: string;
+  drivetrain: string;
   engine: string;
   fuelType: string;
-  tankcapacity: number;
   torque: number;
   horsepower: number;
-  type: string;
+  cartype: string;
+}
+export interface carApiResponse {
+  data: Car[];
 }
 export interface fetchCarParams {
   brand?: string;
@@ -82,14 +83,10 @@ export interface Review {
 }
 
 export interface Dealer {
-  id: string;
-  name: string;
-  location: string;
-  rating: number;
-  reviews: number;
-  phone?: string;
-  email?: string;
-  website?: string;
+  _id: string;
+  name?: string;
+  dealershipName?: string;
+  dealershipLocation?: string;
 }
 
 export interface BookingData {

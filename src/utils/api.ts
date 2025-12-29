@@ -42,7 +42,6 @@ export async function createCar(dealerId: string, payload: CarPayload) {
       method: "POST",
       body: JSON.stringify({
         ...payload,
-
         images,
         newImages: undefined, // remove newImages from payload to avoid confusion
       }),

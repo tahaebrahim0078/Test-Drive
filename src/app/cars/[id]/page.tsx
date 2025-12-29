@@ -35,12 +35,11 @@ export default function CarDetailPage() {
         .flatMap(([_, value]) => value?.data);
       return cachedCar.find((c) => c?._id === carId);
     },
-    // staleTime: 1000 * 60 * 30,
   });
 
   if (isLoading) return <LoadingState />;
   if (isError || !car) return <ErrorState message={"Car Not Found"} />;
-  console.log(car);
+  console.log("Car Details", car);
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % car.images.length);
   };
@@ -145,11 +144,11 @@ export default function CarDetailPage() {
                 </h3>
                 <div className="space-y-2">
                   <p className="text-gray-700 font-semibold">
-                    {car.dealer?.name ??"unknown dealer"}
+                    {car.dealer?.name ?? "unknown dealer"}
                   </p>
                   <p className="text-gray-600 flex items-center gap-2">
                     <FiMapPin size={16} />
-                    {car.dealer?.location??"unknown location"}
+                    {car.dealer?.dealershipLocation ?? "unknown location"}
                   </p>
                 </div>
               </div>
@@ -191,7 +190,7 @@ export default function CarDetailPage() {
             </ClientMotion>
 
             {/* Features */}
-            {/* <ClientMotion
+            <ClientMotion
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -201,14 +200,20 @@ export default function CarDetailPage() {
                 Premium Features
               </h2>
               <div className="grid grid-cols-2 gap-4">
-                {car.features.map((feature, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-red-600 rounded-full"></div>
-                    <span className="text-gray-700">{feature}</span>
-                  </div>
-                ))}
+                {car.features?.length ? (
+                  car.features.map((feature, index) => (
+                    <div key={index} className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-red-600 rounded-full"></div>
+                      <span className="text-gray-700">{feature}</span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500 col-span-2">
+                    No features available.
+                  </p>
+                )}
               </div>
-            </ClientMotion> */}
+            </ClientMotion>
           </div>
 
           {/* Availability */}

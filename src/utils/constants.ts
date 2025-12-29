@@ -75,14 +75,6 @@ export const testimonials = [
     text: "Perfect for busy professionals! I was able to compare multiple cars and book test drives without any hassle. The platform saved me hours of time.",
   },
 ];
-// Car categories
-export const CAR_CATEGORIES = [
-  "Luxury Sedan",
-  "Luxury SUV",
-  "Sports Car",
-  "Supercar",
-  "Electric Luxury",
-];
 
 // Booking status
 export const BOOKING_STATUS = {

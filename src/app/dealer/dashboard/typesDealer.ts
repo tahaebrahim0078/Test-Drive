@@ -4,6 +4,10 @@ export interface CarSpecs {
   fuelType: string;
   horsepower: number;
   color: string;
+  acceleration?: number;
+  torque?: number;
+  drivetrain?: string;
+  cartype?: string;
 }
 
 export interface Car {

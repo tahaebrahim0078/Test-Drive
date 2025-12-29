@@ -29,8 +29,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts",
-    "src/components/home_page_components/CarPreview.jsx"
+    "**/*.mts"
   ],
   "exclude": ["node_modules"]
 }

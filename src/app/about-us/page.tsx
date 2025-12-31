@@ -13,8 +13,6 @@ export default function AboutUs() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <Navbar />
-
       <main className="flex-1 pt-20">
         <HeroSection hasMounted={hasMounted} />
         <StorySection hasMounted={hasMounted} />
@@ -22,8 +20,6 @@ export default function AboutUs() {
         <TeamSection hasMounted={hasMounted} />
         <CTASection hasMounted={hasMounted} />
       </main>
-
-      <Footer />
     </div>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+
 import CarCard from "@/components/CarCard";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -88,10 +87,8 @@ export default function CarsPage() {
 
   return (
     <ProtectedRoute allowedRoles={["customer"]}>
-      {" "}
+      
       <main>
-        <Navbar />
-
         {/* Header */}
         <section className="bg-linear-to-r from-gray-50 to-gray-100 py-6">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -236,7 +233,6 @@ export default function CarsPage() {
             )}
           </div>
         </section>
-        <Footer />
       </main>
     </ProtectedRoute>
   );

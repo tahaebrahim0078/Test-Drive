@@ -17,9 +17,7 @@ export default function AdminPage() {
 
     const updatedUser = await toggleUserStatus(user.id, newStatus);
 
-    setUsers((prev) =>
-      prev.map((u) => (u.id === user.id ? updatedUser : u))
-    );
+    setUsers((prev) => prev.map((u) => (u.id === user.id ? updatedUser : u)));
   };
 
   const handleDeleteUser = async (userId: string) => {
@@ -38,9 +36,7 @@ export default function AdminPage() {
           <div>
             <p className="font-semibold">{user.name}</p>
             <p className="text-sm text-gray-500">{user.email}</p>
-            <p className="text-xs text-gray-400">
-              Status: {user.status}
-            </p>
+            <p className="text-xs text-gray-400">Status: {user.status}</p>
           </div>
 
           <div className="flex gap-2">

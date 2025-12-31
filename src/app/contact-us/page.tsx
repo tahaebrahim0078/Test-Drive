@@ -22,25 +22,21 @@ export default function ContactUs() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <Navbar />
-
       <main className="flex-1 pt-20">
         <ContactHero hasMounted={hasMounted} />
-        
+
         <ContactInfoGrid hasMounted={hasMounted} />
-        
-        <ContactFormSection 
-          hasMounted={hasMounted} 
+
+        <ContactFormSection
+          hasMounted={hasMounted}
           submitted={submitted}
           onSubmit={handleFormSubmit}
         />
-        
+
         <FAQSection hasMounted={hasMounted} />
-        
+
         <ContactCTA hasMounted={hasMounted} />
       </main>
-
-      <Footer />
     </div>
   );
 }

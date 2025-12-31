@@ -84,8 +84,6 @@ export default function RegisterPage() {
 
   return (
     <main>
-      <Navbar />
-
       <section className="min-h-screen bg-linear-to-r from-gray-50 to-gray-100 py-20">
         <div className="max-w-md mx-auto px-4">
           <motion.div
@@ -291,8 +289,6 @@ export default function RegisterPage() {
           </motion.div>
         </div>
       </section>
-
-      <Footer />
     </main>
   );
 }

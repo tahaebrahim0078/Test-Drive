@@ -10,14 +10,12 @@ import Journey from "@/components/home_page_components/Journey";
 export default function Home() {
   return (
     <main>
-      <Navbar />
       <HeroSection />
       <Journey />
       <CarPreview />
       <Partners />
       <Testimonials />
       <CTA />
-      <Footer />
     </main>
   );
 }

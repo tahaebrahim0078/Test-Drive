@@ -47,8 +47,11 @@ export default function DealerCarsTable({
               {car.images?.length ? (
                 <Image
                   src={car.images[0]}
-                  alt={car.model}
+                  alt={`${car.brand} ${car.model}`}
                   fill
+                  sizes="80px"
+                  loading="eager"
+                  priority
                   className="object-cover"
                 />
               ) : (
@@ -136,8 +139,9 @@ export default function DealerCarsTable({
                     {car.images && car.images.length > 0 ? (
                       <Image
                         src={car.images[0]}
-                        alt={`${car.brand} ${car.model}`}
+                        alt={car.model}
                         fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
                         className="object-cover"
                       />
                     ) : (

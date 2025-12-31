@@ -147,8 +147,6 @@ export default function DealerDashboard() {
   return (
     <ProtectedRoute allowedRoles={["dealer"]}>
       <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
-        <Navbar />
-
         <main className="flex-1 pt-28 pb-16">
           <div className="max-w-7xl mx-auto px-6">
             {/* Header */}
@@ -262,8 +260,6 @@ export default function DealerDashboard() {
             )}
           </div>
         </main>
-
-        <Footer />
 
         {/* ================= MODAL ================= */}
         <Dialog

@@ -44,7 +44,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}auth/login`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -71,8 +71,6 @@ export default function LoginPage() {
 
   return (
     <main>
-      <Navbar />
-
       <section className="min-h-screen bg-linear-to-r from-gray-50 black py-20">
         <div className="max-w-md mx-auto px-4">
           <motion.div
@@ -196,8 +194,6 @@ export default function LoginPage() {
           </motion.div>
         </div>
       </section>
-
-      <Footer />
     </main>
   );
 }

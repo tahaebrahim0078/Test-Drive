@@ -3,8 +3,9 @@
 import { use, useState, useEffect } from "react";
 import { FiCheck, FiX, FiClock } from "react-icons/fi";
 import { useAuth } from "@/context/AuthContext";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
+const API_BASE_URL = "http://localhost:5000";
 
 export default function BookingPage({ params }: { params: Promise<{ id: string }> }) {
   const { isLoggedIn, user } = useAuth();
@@ -31,7 +32,7 @@ export default function BookingPage({ params }: { params: Promise<{ id: string }
   // Redirect if not logged in
   useEffect(() => {
     if (!isLoggedIn) {
-      window.location.href = '/login';
+      window.location.href = '/auth/login';
     }
   }, [isLoggedIn]);
 
@@ -106,14 +107,6 @@ export default function BookingPage({ params }: { params: Promise<{ id: string }
     }
   };
 
-  // Check if a slot is available
-  const isSlotAvailable = (time: string) => {
-    if (!availabilityData || availabilityData.length === 0) return false;
-    
-    const slot = availabilityData.find((s: any) => s.time === time);
-    return slot ? slot.available : false;
-  };
-
   // Convert hour to display format
   const formatTime = (hour: string) => {
     const h = parseInt(hour);
@@ -130,6 +123,23 @@ export default function BookingPage({ params }: { params: Promise<{ id: string }
       ...prev,
       [name]: value,
     }));
+  };
+
+  // Check if user data is complete
+  const isUserDataComplete = () => {
+    return bookingData.name && bookingData.email && bookingData.phone;
+  };
+
+  // Modified continue button handler to skip step 2 if data is complete
+  const handleContinueFromStep1 = () => {
+    if (selectedDate && selectedSlot) {
+      // If user data is already complete, skip to step 3
+      if (isUserDataComplete()) {
+        setStep(3);
+      } else {
+        setStep(2);
+      }
+    }
   };
 
   const handleBooking = async () => {
@@ -257,36 +267,62 @@ export default function BookingPage({ params }: { params: Promise<{ id: string }
   }
 
   return (
-    <div className="py-12 bg-white min-h-screen">
+     <ProtectedRoute allowedRoles={["customer"]}>
+
+ <div className="py-12 bg-white min-h-screen">
       <div className="max-w-2xl mx-auto px-4">
         {/* Progress Steps */}
-        <div className="mb-12">
-          <div className="flex justify-between items-center mb-8">
-            {[1, 2, 3].map((stepNum) => (
-              <div key={stepNum} className="flex items-center flex-1">
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-white transition ${
-                    stepNum <= step ? "bg-red-600" : "bg-gray-300"
-                  }`}
-                >
-                  {stepNum}
-                </div>
-                {stepNum < 3 && (
-                  <div
-                    className={`flex-1 h-1 mx-2 transition ${
-                      stepNum < step ? "bg-red-600" : "bg-gray-300"
-                    }`}
-                  />
-                )}
-              </div>
-            ))}
+    <div className="mb-12">
+  <div className="flex justify-center mb-6">
+    <div className="flex items-center gap-8">
+      {[1, 2, 3].map((stepNum, index) => (
+        <div key={stepNum} className="flex items-center">
+          {/* Step */}
+          <div className="flex flex-col items-center">
+            <div
+              className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-white transition ${
+                stepNum <= step ? "bg-red-600" : "bg-gray-300"
+              }`}
+            >
+              {stepNum}
+            </div>
+            <span className="mt-2 text-sm text-gray-600 w-32 text-center">
+              {stepNum === 1 && "Select Date & Time"}
+              {stepNum === 2 && "Your Details"}
+              {stepNum === 3 && "Confirm Booking"}
+            </span>
           </div>
-          <div className="flex justify-between text-sm text-gray-600">
-            <span>Select Date & Time</span>
-            <span>Your Details</span>
-            <span>Confirm Booking</span>
-          </div>
+
+          {/* Line */}
+          {index < 2 && (
+            <div
+              className={`h-1 w-24 mx-2 transition ${
+                stepNum < step ? "bg-red-600" : "bg-gray-300"
+              }`}
+            />
+          )}
         </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+        {/* User Info Banner (shows when data is auto-filled) */}
+        {isUserDataComplete() && step === 1 && (
+          <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
+            <div className="flex items-start gap-3">
+              <FiCheck className="text-green-600 mt-0.5 flex-shrink-0" />
+              <div className="flex-1">
+                <p className="text-sm font-medium text-green-800">
+                  Your details are ready!
+                </p>
+                <p className="text-sm text-green-700 mt-1">
+                  Booking as: {bookingData.name} ({bookingData.email})
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Step 1: Date & Time */}
         {step === 1 && (
@@ -388,11 +424,11 @@ export default function BookingPage({ params }: { params: Promise<{ id: string }
             )}
 
             <button
-              onClick={() => selectedDate && selectedSlot && setStep(2)}
+              onClick={handleContinueFromStep1}
               disabled={!selectedDate || !selectedSlot || loading}
               className="w-full bg-red-600 hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition"
             >
-              Continue
+              {isUserDataComplete() ? 'Continue to Confirmation' : 'Continue'}
             </button>
           </div>
         )}
@@ -531,6 +567,14 @@ export default function BookingPage({ params }: { params: Promise<{ id: string }
               </div>
             </div>
 
+            {/* Edit Details Button */}
+            <button
+              onClick={() => setStep(2)}
+              className="w-full text-red-600 hover:text-red-700 font-medium text-sm underline"
+            >
+              Need to edit your details?
+            </button>
+
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <p className="text-sm text-blue-800">
                 By confirming, you agree to our terms and conditions. A
@@ -546,7 +590,7 @@ export default function BookingPage({ params }: { params: Promise<{ id: string }
 
             <div className="flex gap-4">
               <button
-                onClick={() => setStep(2)}
+                onClick={() => setStep(1)}
                 disabled={loading}
                 className="flex-1 border-2 border-gray-300 text-gray-700 font-bold py-3 px-6 rounded-lg hover:bg-gray-100 transition disabled:opacity-50"
               >
@@ -571,5 +615,8 @@ export default function BookingPage({ params }: { params: Promise<{ id: string }
         )}
       </div>
     </div>
+
+     </ProtectedRoute>
+   
   );
 }

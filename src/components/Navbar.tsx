@@ -11,10 +11,11 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
-  const { user, isLoggedIn, logout } = useAuth();
+  const { user, isLoggedIn, logout, isLoading } = useAuth();
   const pathname = usePathname();
 
   /* Scroll effect */
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 60);
@@ -42,7 +43,11 @@ export default function Navbar() {
      }`;
 
   const showCars = user?.role !== "dealer";
-
+  if (isLoading) {
+    return (
+      <nav className="fixed top-0 w-full h-16 bg-white/70 backdrop-blur-md" />
+    );
+  }
   return (
     <>
       {/* ================= NAVBAR ================= */}
@@ -139,7 +144,7 @@ export default function Navbar() {
 
                   <button
                     onClick={() => setShowLogoutDialog(true)}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl
+                    className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-xl
                                bg-gray-100 text-gray-600 text-sm font-medium
                                hover:bg-red-500 hover:text-white transition"
                   >
@@ -168,7 +173,7 @@ export default function Navbar() {
             {/* Mobile Button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden text-gray-700 hover:text-red-500 transition"
+              className="md:hidden cursor-pointer text-gray-700 hover:text-red-500 transition"
             >
               {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
             </button>
@@ -232,7 +237,7 @@ export default function Navbar() {
 
                     <button
                       onClick={() => setShowLogoutDialog(true)}
-                      className="w-full flex items-center justify-center gap-2
+                      className="w-full flex items-center cursor-pointer justify-center gap-2
                                  bg-gray-100 hover:bg-red-500 hover:text-white
                                  text-gray-600 py-2 rounded-xl transition"
                     >
@@ -263,7 +268,7 @@ export default function Navbar() {
 
       {/* ================= LOGOUT DIALOG ================= */}
       {showLogoutDialog && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center">
+        <div className="fixed inset-0 z-100 flex items-center justify-center">
           {/* Overlay */}
           <div
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
@@ -282,7 +287,7 @@ export default function Navbar() {
             <div className="flex gap-3">
               <button
                 onClick={() => setShowLogoutDialog(false)}
-                className="flex-1 py-2 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
+                className="flex-1 py-2 cursor-pointer rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
               >
                 Cancel
               </button>
@@ -293,7 +298,7 @@ export default function Navbar() {
                   setShowLogoutDialog(false);
                   setIsOpen(false);
                 }}
-                className="flex-1 py-2 rounded-xl bg-red-500 text-white hover:bg-red-600 transition"
+                className="flex-1 py-2 cursor-pointer rounded-xl bg-red-500 text-white hover:bg-red-600 transition"
               >
                 Log out
               </button>

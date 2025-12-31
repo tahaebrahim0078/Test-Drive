@@ -5,8 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import useHasMounted from "@/hooks/useHasMounted";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";

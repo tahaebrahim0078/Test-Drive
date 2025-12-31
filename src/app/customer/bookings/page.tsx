@@ -1,15 +1,13 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import Link from "next/link";
+import { TfiCar } from "react-icons/tfi";
+
 import { motion, AnimatePresence } from "framer-motion";
 import useHasMounted from "@/hooks/useHasMounted";
 import {
   FiCalendar,
   FiClock,
   FiMapPin,
-  FiStar,
   FiX,
   FiAlertCircle,
 } from "react-icons/fi";
@@ -129,10 +127,10 @@ const CancelModal = ({
               className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
             >
               {/* Header with gradient */}
-              <div className="bg-gradient-to-r from-red-500 to-red-600 p-6 relative">
+              <div className="bg-linear-to-r from-red-500 to-red-600 p-6 relative">
                 <button
                   onClick={onClose}
-                  className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors"
+                  className="absolute cursor-pointer top-4 right-4 text-white/80 hover:text-white transition-colors"
                 >
                   <FiX size={24} />
                 </button>
@@ -188,14 +186,14 @@ const CancelModal = ({
                   <button
                     onClick={onClose}
                     disabled={isLoading}
-                    className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex-1 cursor-pointer px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Keep Booking
                   </button>
                   <button
                     onClick={onConfirm}
                     disabled={isLoading}
-                    className="flex-1 px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-semibold hover:from-red-600 hover:to-red-700 transition-all shadow-lg shadow-red-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex-1 cursor-pointer px-6 py-3 bg-linear-to-r from-red-500 to-red-600 text-white rounded-xl font-semibold hover:from-red-600 hover:to-red-700 transition-all shadow-lg shadow-red-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isLoading ? (
                       <span className="flex items-center justify-center gap-2">
@@ -284,205 +282,146 @@ export default function BookingsPage() {
 
   const now = new Date();
   const upcomingBookings = bookings.filter((b) => new Date(b.startTime) > now);
-  const completedBookings = bookings.filter((b) => new Date(b.endTime) < now);
-  console.log(bookings);
   if (!hasMounted || authLoading) return null;
 
   if (!isLoggedIn) {
     return (
-      <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-        <Navbar />
+      <main className="min-h-screen bg-linear-to-b from-gray-50 to-white">
         <div className="py-24 text-center text-red-600">
           You must be logged in to view bookings.
         </div>
-        <Footer />
       </main>
     );
   }
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-        <Navbar />
+      <main className="min-h-screen bg-linear-to-b from-gray-50 to-white">
         <div className="py-24 text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
           <p className="mt-4 text-gray-600">Loading bookings...</p>
         </div>
-        <Footer />
       </main>
     );
   }
 
   if (isError) {
     return (
-      <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-        <Navbar />
+      <main className="min-h-screen bg-linear-to-b from-gray-50 to-white">
         <div className="py-24 text-center text-red-600">
           Failed to load bookings.
         </div>
-        <Footer />
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <Navbar />
-
-      <section className="py-12">
+    <main className="min-h-screen bg-linear-to-b from-gray-50 to-white">
+      <section className="py-12 bg-linear-to-b from-gray-50 to-gray-100 min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.h1
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="text-5xl font-extrabold bg-linear-to-r  py-2 from-red-500 to-red-800 bg-clip-text text-transparent mb-12 text-center"
           >
             My Bookings
           </motion.h1>
 
           {/* Upcoming */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold mb-6 text-gray-900">
+            <h2 className="text-3xl font-bold mb-8 text-gray-900 text-center sm:text-left">
               Upcoming Bookings
             </h2>
 
             {upcomingBookings.length ? (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="space-y-4"
-              >
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
                 {upcomingBookings.map((b) => {
                   const start = new Date(b.startTime);
+                  const isPast = start < new Date();
+
+                  const carIcon = (
+                    <TfiCar className="text-yellow-500 w-7 h-7" />
+                  );
 
                   return (
                     <motion.div
                       key={b._id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      whileHover={{ scale: 1.02, x: 5 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                      className="bg-white border-2 border-red-600 rounded-2xl p-6 flex justify-between items-start shadow-lg shadow-red-100 hover:shadow-xl hover:shadow-red-200 transition-shadow"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                      className="relative rounded-3xl p-6 flex flex-col justify-between shadow-lg border-l-8 border-red-400 transition-all bg-linear-to-r from-red-50 to-white backdrop-blur-md"
                     >
-                      <div>
-                        <h3 className="text-2xl font-bold text-gray-900">
+                      {/* Status Badge */}
+                      <span
+                        className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold ${
+                          isPast
+                            ? "bg-gray-300 text-gray-800"
+                            : "bg-red-500 text-white"
+                        }`}
+                      >
+                        {isPast ? "Past" : "Upcoming"}
+                      </span>
+
+                      {/* Car Info */}
+                      <div className="mb-6 flex items-center gap-3">
+                        {carIcon}
+                        <h3 className="text-xl font-bold text-gray-900">
                           {b.car
                             ? `${b.car.brand} ${b.car.model}`
-                            : "Car Information Unavailable"}
+                            : "Car Info Unavailable"}
                         </h3>
-                        <div className="mt-3 space-y-2">
-                          <p className="flex items-center gap-2 text-gray-600">
-                            <FiMapPin className="text-red-600" />{" "}
-                            {b.dealer?.name || "Dealer Information Unavailable"}
-                          </p>
-                          <p className="flex items-center gap-2 text-gray-600">
-                            <FiCalendar className="text-red-600" />{" "}
-                            {start.toLocaleDateString()}
-                          </p>
-                          <p className="flex items-center gap-2 text-gray-600">
-                            <FiClock className="text-red-600" />{" "}
-                            {start.toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                          </p>
-                        </div>
+                      </div>
+                      <div className="space-y-2 text-gray-700 mb-4">
+                        <p className="flex items-center gap-2">
+                          <FiMapPin className="text-red-500 w-5 h-5" />
+                          {b.dealer?.name || "Dealer Info Unavailable"}
+                        </p>
+                        <p className="flex items-center gap-2">
+                          <FiCalendar className="text-red-500 w-5 h-5" />
+                          {start.toLocaleDateString(undefined, {
+                            weekday: "short",
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })}
+                        </p>
+                        <p className="flex items-center gap-2">
+                          <FiClock className="text-red-500 w-5 h-5" />
+                          {start.toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </p>
                       </div>
 
-                      <button
-                        onClick={() => handleCancelClick(b)}
-                        className="border-2 border-red-600 text-red-600 px-6 py-3 rounded-xl hover:bg-red-600 hover:text-white transition-all font-semibold hover:scale-105 active:scale-95"
-                      >
-                        Cancel
-                      </button>
+                      {/* Cancel Button */}
+                      {!isPast && (
+                        <button
+                          onClick={() => handleCancelClick(b)}
+                          className="mt-auto cursor-pointer bg-red-500 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-red-600 transition-all shadow-md"
+                        >
+                          <FiX className="w-5 h-5" />
+                          Cancel
+                        </button>
+                      )}
                     </motion.div>
                   );
                 })}
-              </motion.div>
+              </div>
             ) : (
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-gray-600 text-lg"
+                transition={{ duration: 0.5 }}
+                className="text-gray-500 text-lg text-center"
               >
                 No upcoming bookings.
               </motion.p>
             )}
           </div>
-
-          {/* Completed */}
-          <div>
-            <h2 className="text-3xl font-bold mb-6 text-gray-900">
-              Completed Bookings
-            </h2>
-
-            {completedBookings.length ? (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="space-y-4"
-              >
-                {completedBookings.map((b) => (
-                  <motion.div
-                    key={b._id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    whileHover={{ scale: 1.02, x: 5 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                    className="bg-white border-2 border-gray-200 rounded-2xl p-6 flex justify-between items-start shadow-md hover:shadow-lg transition-shadow"
-                  >
-                    <div>
-                      <h3 className="font-bold text-2xl text-gray-900">
-                        {b.car
-                          ? `${b.car.brand} ${b.car.model}`
-                          : "Car Information Unavailable"}
-                      </h3>
-                      <p className="flex items-center gap-2 text-gray-600 mt-3">
-                        <FiMapPin className="text-gray-400" />{" "}
-                        {b.dealer?.name || "Dealer Information Unavailable"}
-                      </p>
-                    </div>
-
-                    <div>
-                      {b.rating !== null ? (
-                        <div className="flex gap-1">
-                          {[...Array(5)].map((_, i) => (
-                            <FiStar
-                              key={i}
-                              size={20}
-                              className={
-                                i < b.rating
-                                  ? "text-orange-400 fill-current"
-                                  : "text-gray-300"
-                              }
-                            />
-                          ))}
-                        </div>
-                      ) : (
-                        <Link
-                          href={`/review/${b._id}`}
-                          className="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-red-600 hover:to-red-700 transition-all shadow-lg shadow-red-500/30 hover:scale-105 active:scale-95 inline-block"
-                        >
-                          Leave Review
-                        </Link>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            ) : (
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-gray-600 text-lg"
-              >
-                No completed bookings.
-              </motion.p>
-            )}
-          </div>
         </div>
       </section>
-
-      <Footer />
 
       {/* Cancel Modal */}
       <CancelModal

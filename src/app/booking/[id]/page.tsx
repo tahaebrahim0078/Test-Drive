@@ -4,8 +4,6 @@ import { use, useState, useEffect } from "react";
 import { FiCheck, FiX, FiClock } from "react-icons/fi";
 import { useAuth } from "@/context/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
 
 const API_BASE_URL = "http://localhost:5000";
 
@@ -14,7 +12,7 @@ export default function BookingPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { isLoggedIn, user } = useAuth();
+  const { user } = useAuth();
   const resolvedParams = use(params);
   const carId = resolvedParams.id;
   const [step, setStep] = useState(1);
@@ -255,13 +253,13 @@ export default function BookingPage({
             <div className="space-y-3">
               <button
                 onClick={() => (window.location.href = "/cars")}
-                className="block w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition"
+                className="block w-full cursor-pointer bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition"
               >
                 Browse More Cars
               </button>
               <button
                 onClick={() => (window.location.href = "/")}
-                className="block w-full border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white font-bold py-3 px-6 rounded-lg transition"
+                className="block w-full border-2 cursor-pointer border-red-600 text-red-600 hover:bg-red-600 hover:text-white font-bold py-3 px-6 rounded-lg transition"
               >
                 Back to Home
               </button>
@@ -465,7 +463,7 @@ export default function BookingPage({
                   value={bookingData.name}
                   onChange={handleInputChange}
                   placeholder="John Doe"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
+                  className="w-full px-4 text-black py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
                 />
               </div>
 
@@ -479,7 +477,7 @@ export default function BookingPage({
                   value={bookingData.email}
                   onChange={handleInputChange}
                   placeholder="john@example.com"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
+                  className="w-full px-4 py-2 border text-black border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
                 />
               </div>
 
@@ -493,7 +491,7 @@ export default function BookingPage({
                   value={bookingData.phone}
                   onChange={handleInputChange}
                   placeholder="+1 (555) 123-4567"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
+                  className="w-full px-4 py-2 border text-black border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
                 />
               </div>
 
@@ -507,14 +505,14 @@ export default function BookingPage({
                   onChange={handleInputChange}
                   placeholder="Any special requests or questions?"
                   rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
+                  className="w-full px-4 py-2 text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
                 />
               </div>
 
               <div className="flex gap-4">
                 <button
                   onClick={() => setStep(1)}
-                  className="flex-1 border-2 border-gray-300 text-gray-700 font-bold py-3 px-6 rounded-lg hover:bg-gray-100 transition"
+                  className="flex-1 cursor-pointer border-2 border-gray-300 text-gray-700 font-bold py-3 px-6 rounded-lg hover:bg-gray-100 transition"
                 >
                   Back
                 </button>
@@ -525,7 +523,7 @@ export default function BookingPage({
                     !bookingData.email ||
                     !bookingData.phone
                   }
-                  className="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-gray-400 text-white font-bold py-3 px-6 rounded-lg transition"
+                  className="flex-1 cursor-pointer bg-red-600 hover:bg-red-700 disabled:bg-gray-400 text-white font-bold py-3 px-6 rounded-lg transition"
                 >
                   Continue
                 </button>
@@ -587,7 +585,7 @@ export default function BookingPage({
               {/* Edit Details Button */}
               <button
                 onClick={() => setStep(2)}
-                className="w-full text-red-600 hover:text-red-700 font-medium text-sm underline"
+                className="w-full text-red-600 cursor-pointer hover:text-red-700 font-medium text-sm underline"
               >
                 Need to edit your details?
               </button>
@@ -609,14 +607,14 @@ export default function BookingPage({
                 <button
                   onClick={() => setStep(1)}
                   disabled={loading}
-                  className="flex-1 border-2 border-gray-300 text-gray-700 font-bold py-3 px-6 rounded-lg hover:bg-gray-100 transition disabled:opacity-50"
+                  className="flex-1 border-2 cursor-pointer border-gray-300 text-gray-700 font-bold py-3 px-6 rounded-lg hover:bg-gray-100 transition disabled:opacity-50"
                 >
                   Back
                 </button>
                 <button
                   onClick={handleBooking}
                   disabled={loading}
-                  className="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-gray-400 text-white font-bold py-3 px-6 rounded-lg transition flex items-center justify-center gap-2"
+                  className="flex-1 bg-red-600 cursor-pointer hover:bg-red-700 disabled:bg-gray-400 text-white font-bold py-3 px-6 rounded-lg transition flex items-center justify-center gap-2"
                 >
                   {loading ? (
                     <>

@@ -19,8 +19,7 @@ import { useAuth } from "@/context/AuthContext";
 import DealerCarsTable from "@/components/dealerComp/DealerCarsTable";
 import DealerBookingsList from "@/components/dealerComp/DealerBookingsList";
 import DealerCarForm from "@/components/dealerComp/DealerCarForm";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 import {
@@ -143,7 +142,6 @@ export default function DealerDashboard() {
       icon: FiDollarSign,
     },
   ];
-
   return (
     <ProtectedRoute allowedRoles={["dealer"]}>
       <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
@@ -293,6 +291,7 @@ export default function DealerDashboard() {
                           year: editingCar.year ?? new Date().getFullYear(),
                           price: editingCar.price,
                           specs: editingCar.specs,
+                          features: editingCar.features ?? [],
                           images: editingCar.images ?? [],
                           isActive: editingCar.isActive ?? true,
                         }

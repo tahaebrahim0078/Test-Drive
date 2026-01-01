@@ -19,6 +19,7 @@ export interface Car {
   category?: string; // لو موجود
   price: number;
   images: string[];
+  features: string[];
   specs: CarSpecs;
   isActive?: boolean;
 }
@@ -29,6 +30,7 @@ export interface CarPayload {
   year: number;
   price: number;
   images: string[];
+  features?: string[];
   specs: CarSpecs;
   newImages?: File[];
   isActive?: boolean;

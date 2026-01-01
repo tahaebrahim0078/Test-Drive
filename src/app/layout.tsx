@@ -34,11 +34,9 @@ export default function RootLayout({
       >
         <Provider>
           <AuthProvider>
-            {/* Navbar */}
             <Navbar />
             <div className="py-8 bg-white" />
             <main className="flex-1">{children}</main>
-            {/* Footer */}
             <Footer />
           </AuthProvider>
         </Provider>

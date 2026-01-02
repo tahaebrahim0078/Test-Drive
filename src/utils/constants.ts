@@ -114,3 +114,26 @@ export const ROUTES = {
   CUSTOMER_BOOKINGS: "/customer/bookings",
   REVIEW: (id: string) => `/review/${id}`,
 };
+
+export const Features = [
+  "ABS",
+  "Air Conditioning",
+  "Alloy Wheels",
+  "Android Auto",
+  "Apple CarPlay",
+  "Automatic Climate Control",
+  "Backup Camera",
+  "Blind Spot Monitoring",
+  "Bluetooth",
+  "Cruise Control",
+  "Electric Seats",
+  "Heated Seats",
+  "Keyless Entry",
+  "Lane Assist",
+  "Leather Seats",
+  "Navigation System",
+  "Parking Sensors",
+  "Sunroof",
+  "Turbo Engine",
+  "Wireless Charging",
+];

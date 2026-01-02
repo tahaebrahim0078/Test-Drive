@@ -1,13 +1,13 @@
 "use client";
 import ClientMotion from "@/components/ClientMotion";
 import Image from "next/image";
-import homepageImg from "../../../public/images/HomeImage.jpeg";
+import homepageImg from "../../../public/images/homepage.png";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 export default function HeroSection() {
   const { isLoggedIn } = useAuth();
   return (
-    <section className="bg-linear-to-r from-gray-50 to-gray-100 pt-20 pb-20">
+    <section className="bg-[#fefefe] pt-20 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
@@ -68,13 +68,13 @@ export default function HeroSection() {
             transition={{ duration: 0.8 }}
             className="relative"
           >
-            <div className="relative h-96 bg-linear-to-br from-red-400 to-red-600 rounded-lg overflow-hidden shadow-2xl">
+            <div>
               <Image
                 src={homepageImg}
-                width={600}
+                width={800}
                 height={500}
                 alt="Luxury Car"
-                className="w-full h-full object-cover "
+                className="w-full h-full object-cover"
                 priority
               />
             </div>

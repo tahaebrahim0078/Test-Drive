@@ -1,29 +1,28 @@
-import ClientMotion from "@/components/ClientMotion";
-
 export default function CTA() {
   return (
-    <section className="bg-red-600 text-white py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <ClientMotion
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-4xl font-bold mb-4">
-            Ready to Find Your Perfect Car?
-          </h2>
-          <p className="text-xl mb-8 text-red-100">
-            Join thousands of satisfied customers who found their dream car
-            through our platform.
-          </p>
+    <section className="relative overflow-hidden bg-linear-to-br from-black via-zinc-900 to-black text-white py-24">
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-1/2 left-1/2 h-125 w-125 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600/30 blur-[120px]" />
+      </div>
 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
+            The Moment You Drive It
+            <br />
+            <span className="text-red-500">You Understand</span>
+          </h2>
+
+          <p className="mx-auto max-w-2xl text-lg sm:text-xl text-zinc-300 mb-10">
+            Don’t just look at cars — drive them. Experience performance,
+            comfort, and control before you decide.
+          </p>
           <div className="max-w-md mx-auto mb-6">
             <form className="flex flex-col sm:flex-row gap-3">
               <input
                 type="email"
                 placeholder="Enter your email address"
-                className="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none"
+                className="flex-1 px-4 py-3 rounded-lg bg-amber-50 text-gray-900 focus:outline-none"
               />
               <button
                 type="submit"
@@ -33,11 +32,7 @@ export default function CTA() {
               </button>
             </form>
           </div>
-
-          <p className="text-sm text-red-100">
-            No spam, just exclusive deals and updates
-          </p>
-        </ClientMotion>
+        </div>
       </div>
     </section>
   );

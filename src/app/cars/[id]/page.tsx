@@ -36,7 +36,7 @@ export default function CarDetailPage() {
       return cachedCar.find((c) => c?._id === carId);
     },
   });
-
+  console.log("Car Details", car);
   if (isLoading) return <LoadingState />;
   if (isError || !car) return <ErrorState message={"Car Not Found"} />;
   console.log("Car Details", car);

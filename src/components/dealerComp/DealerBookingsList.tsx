@@ -23,7 +23,6 @@ export default function DealerBookingsList({ bookings, isLoading }: Props) {
       </p>
     );
   }
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {bookings.map((b, i) => (
@@ -68,10 +67,10 @@ export default function DealerBookingsList({ bookings, isLoading }: Props) {
 
           {/* Car Info */}
           <div className="text-sm text-gray-600 space-y-2">
-            <p className="font-medium text-gray-900">
+            {/* <p className="font-medium text-gray-900">
               {b.car.brand} {b.car.model}
               <span className="text-gray-400"> ({b.car.year})</span>
-            </p>
+            </p> */}
 
             <p className="flex items-center text-orange-500 gap-2">
               <FiClock />

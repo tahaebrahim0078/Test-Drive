@@ -5,7 +5,7 @@ import { CarPayload, CarSpecs } from "@/app/dealer/dashboard/typesDealer";
 import { FiLoader, FiPlus, FiX } from "react-icons/fi";
 import Image from "next/image";
 import imageCompression from "browser-image-compression";
-
+import { CarFeatures } from "./CarFeatures";
 interface DealerCarFormProps {
   onSubmit: (data: CarPayload) => void;
   initialData?: CarPayload;
@@ -35,15 +35,18 @@ export default function DealerCarForm({
       acceleration: 0,
       torque: 0,
       drivetrain: "",
+      cartype: "",
     }
   );
   const [existingImages, setExistingImages] = useState<string[]>(
     initialData?.images || []
   );
+  const [features, setFeatures] = useState<string[]>(
+    initialData?.features || []
+  );
   const [newImages, setNewImages] = useState<File[]>([]);
   const [newPreviews, setNewPreviews] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const uploadImageToCloudinary = async (file: File) => {
@@ -106,6 +109,7 @@ export default function DealerCarForm({
         year,
         price,
         specs,
+        features,
         images: [...existingImages, ...uploadedUrls],
         isActive: true,
       });
@@ -188,14 +192,22 @@ export default function DealerCarForm({
                   ? "number"
                   : "text"
               }
+              step={
+                field === "acceleration"
+                  ? "0.1"
+                  : field === "horsepower" || field === "torque"
+                  ? "1"
+                  : undefined
+              }
+              inputMode={field === "acceleration" ? "decimal" : undefined}
               value={(specs as any)[field]}
               onChange={(e) =>
                 setSpecs({
                   ...specs,
                   [field]:
-                    field === "horsepower" ||
-                    field === "acceleration" ||
-                    field === "torque"
+                    field === "horsepower" || field === "torque"
+                      ? Number(e.target.value)
+                      : field === "acceleration"
                       ? Number(e.target.value)
                       : e.target.value,
                 })
@@ -205,7 +217,7 @@ export default function DealerCarForm({
           </div>
         ))}
       </div>
-
+      <CarFeatures value={features} onChange={setFeatures} />
       {/* Images */}
       <div>
         <label className="block text-gray-700 font-medium mb-3">

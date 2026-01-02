@@ -1,7 +1,6 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+
 import Link from "next/link";
 import { useState } from "react";
 import { useParams } from "next/navigation";
@@ -52,7 +51,6 @@ export default function CarDetailPage() {
 
   return (
     <main>
-      <Navbar />
 
       {/* Breadcrumb */}
       <div className="bg-gray-50 py-4 border-b">
@@ -249,7 +247,6 @@ export default function CarDetailPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

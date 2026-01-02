@@ -38,7 +38,7 @@ const fetchBookings = async (): Promise<Booking[]> => {
   }
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/customer/bookings`,
+    `${process.env.NEXT_PUBLIC_API_URL}customer/bookings`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -67,7 +67,7 @@ const cancelBooking = async (
   }
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/customer/bookings/${bookingId}/cancel`,
+    `${process.env.NEXT_PUBLIC_API_URL}customer/bookings/${bookingId}/cancel`,
     {
       method: "PATCH",
       headers: {

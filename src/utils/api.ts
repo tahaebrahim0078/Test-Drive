@@ -39,7 +39,7 @@ export async function createCar(dealerId: string, payload: CarPayload) {
 
     const images = [...(payload.images || []), ...uploadedImages];
 
-    return await apiCall<Car>("/dealer/cars", {
+    return await apiCall<Car>("dealer/cars", {
       method: "POST",
       body: JSON.stringify({
         ...payload,
@@ -114,7 +114,7 @@ export async function fetchUserBookings(userId: string) {
 export async function fetchDealerBookings() {
   try {
     const data = await apiCall<{ count: number; bookings: BookingRequest[] }>(
-      "/dealer/bookings"
+      "dealer/bookings"
     );
     return data.bookings || [];
   } catch (error) {

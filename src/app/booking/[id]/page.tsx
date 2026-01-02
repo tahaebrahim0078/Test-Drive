@@ -5,7 +5,7 @@ import { FiCheck, FiX, FiClock } from "react-icons/fi";
 import { useAuth } from "@/context/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function BookingPage({
   params,
@@ -74,13 +74,13 @@ export default function BookingPage({
         );
       }
 
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token"); 
 
       if (!token) {
         throw new Error("Please login to view availability");
       }
 
-      const url = `${API_BASE_URL}/customer/cars/${carId}/availability?date=${date}`;
+      const url = `${API_BASE_URL}customer/cars/${carId}/availability?date=${date}`;
       console.log("🔍 Fetching:", url);
 
       const response = await fetch(url, {
@@ -170,7 +170,7 @@ export default function BookingPage({
         throw new Error("Please login to make a booking");
       }
 
-      const url = `${API_BASE_URL}/customer/cars/${carId}/book`;
+      const url = `${API_BASE_URL}customer/cars/${carId}/book`;
       console.log("📤 Booking:", url);
       console.log("📦 Payload:", {
         date: selectedDate,

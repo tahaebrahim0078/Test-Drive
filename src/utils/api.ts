@@ -14,11 +14,11 @@ export async function fetchCars(params: fetchCarParams = {}): Promise<any> {
   const query = new URLSearchParams(
     Object.entries(params).filter(([_, value]) => value != null)
   ).toString();
-  return apiCall<Car[]>(`/customer/cars${query ? `?${query}` : ""}`);
+  return apiCall<Car[]>(`customer/cars${query ? `?${query}` : ""}`);
 }
 export async function fetchCarById(id: string) {
   try {
-    return await apiCall<Car>(`/customer/cars/${id}`);
+    return await apiCall<Car>(`customer/cars/${id}`);
   } catch (error) {
     console.error("Error fetching car:", error);
     throw error;
@@ -27,7 +27,7 @@ export async function fetchCarById(id: string) {
 
 // Fetch cars for a specific dealer
 export async function fetchMyCars() {
-  return await apiCall<Car[]>("/dealer/me/cars");
+  return await apiCall<Car[]>("dealer/me/cars");
 }
 
 // Dealer Car CRUD Operations
@@ -61,7 +61,7 @@ export async function updateCar(carId: string, payload: CarPayload) {
 
     const images = [...(payload.images || []), ...uploadedImages];
 
-    return await apiCall<Car>(`/dealer/cars/${carId}`, {
+    return await apiCall<Car>(`dealer/cars/${carId}`, {
       method: "PUT",
       body: JSON.stringify({
         ...payload,
@@ -77,7 +77,7 @@ export async function updateCar(carId: string, payload: CarPayload) {
 
 export async function deleteCar(carId: string) {
   try {
-    return await apiCall<{ success: boolean }>(`/dealer/cars/${carId}`, {
+    return await apiCall<{ success: boolean }>(`dealer/cars/${carId}`, {
       method: "DELETE",
     });
   } catch (error) {
@@ -92,7 +92,7 @@ export async function deleteCar(carId: string) {
 
 export async function createBooking(bookingData: BookingData) {
   try {
-    return await apiCall(`/bookings`, {
+    return await apiCall(`bookings`, {
       method: "POST",
       body: JSON.stringify(bookingData),
     });
@@ -104,7 +104,7 @@ export async function createBooking(bookingData: BookingData) {
 
 export async function fetchUserBookings(userId: string) {
   try {
-    return await apiCall(`/users/${userId}/bookings`);
+    return await apiCall(`users/${userId}/bookings`);
   } catch (error) {
     console.error("Error fetching user bookings:", error);
     return [];
@@ -144,7 +144,7 @@ export async function fetchDealerBookings() {
 
 export async function submitReview(reviewData: ReviewData) {
   try {
-    return await apiCall(`/reviews`, {
+    return await apiCall(`reviews`, {
       method: "POST",
       body: JSON.stringify(reviewData),
     });
@@ -156,7 +156,7 @@ export async function submitReview(reviewData: ReviewData) {
 
 export async function fetchCarReviews(carId: string) {
   try {
-    return await apiCall(`/cars/${carId}/reviews`);
+    return await apiCall(`cars/${carId}/reviews`);
   } catch (error) {
     console.error("Error fetching reviews:", error);
     return [];

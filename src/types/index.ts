@@ -14,7 +14,10 @@ export interface Car {
   rating?: number;
   reviews?: number;
   dealer?: Dealer;
+  year?: number;
+  isActive: boolean;
 }
+
 export interface Spec {
   transmission: string;
   color: string;

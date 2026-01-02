@@ -11,17 +11,19 @@ export interface CarSpecs {
 }
 
 export interface Car {
-  _id?: string;
-  name?: string; // لو موجود في API
+  _id: string;
+  name: string;
   brand: string;
   model: string;
-  year?: number; // خليها optional
-  category?: string; // لو موجود
+  category: string;
   price: number;
   images: string[];
-  features: string[];
-  specs: CarSpecs;
-  isActive?: boolean;
+  description?: string;
+  year?: number;
+  features?: string[];
+  rating?: number;
+  reviews?: number;
+  isActive: boolean;
 }
 
 export interface CarPayload {

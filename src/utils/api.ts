@@ -25,9 +25,6 @@ export async function fetchCarById(id: string) {
   }
 }
 
-
-
-
 // Fetch cars for a specific dealer
 export async function fetchMyCars() {
   return await apiCall<Car[]>("/dealer/me/cars");

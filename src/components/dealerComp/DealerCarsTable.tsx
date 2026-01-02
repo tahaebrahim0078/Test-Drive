@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { FiEdit2, FiTrash2, FiImage } from "react-icons/fi";
 import Image from "next/image";
-import { Car } from "@/app/dealer/dashboard/typesDealer";
+import { Car } from "@/types";
 
 interface DealerCarsTableProps {
   cars: Car[];

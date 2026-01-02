@@ -29,7 +29,8 @@ import {
   createCar,
   updateCar,
 } from "@/utils/api";
-import { Car, BookingRequest, CarPayload } from "./typesDealer";
+import { BookingRequest, CarPayload } from "./typesDealer";
+import { Car } from "@/types";
 
 export default function DealerDashboard() {
   const hasMounted = useHasMounted();

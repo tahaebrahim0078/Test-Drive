@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     siteName: "DriveTest",
     images: [
       {
-        url: "/og-image.png", // حط صورة في public
+        url: "/bgWeb.png",
         width: 1200,
         height: 630,
         alt: "DriveTest - Car Test Drive Platform",
@@ -70,8 +70,8 @@ export const metadata: Metadata = {
     title: "DriveTest | Test Drive Booking Platform",
     description:
       "A modern test drive booking platform for customers and car dealers.",
-    images: ["/og-image.png"],
-    creator: "@drivetest", // اختياري
+    images: ["/bgWeb.png"],
+    creator: "@drivetest",
   },
 
   robots: {
@@ -89,15 +89,15 @@ export const metadata: Metadata = {
   category: "Automotive",
 
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
+    icon: "/logoTestCar.ico",
+    shortcut: "/logoTestCar-16x16.ico",
     apple: "/apple-touch-icon.png",
   },
 
   manifest: "/site.webmanifest",
 
   other: {
-    "theme-color": "#000000",
+    "theme-color": "#dc2626", // red-600
   },
 };
 
@@ -117,6 +117,7 @@ export default function RootLayout({
             <Navbar />
             <div className="py-8 bg-white" />
             <main className="flex-1">{children}</main>
+
             <Footer />
           </AuthProvider>
         </Provider>

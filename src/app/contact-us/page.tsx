@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import useHasMounted from "@/hooks/useHasMounted";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+
 import ContactHero from "./components/contact-hero";
 import ContactInfoGrid from "./components/contactInfo-grid";
 import ContactFormSection from "./components/contact-form-section";

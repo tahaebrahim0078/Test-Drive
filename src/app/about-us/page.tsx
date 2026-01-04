@@ -1,7 +1,6 @@
 "use client";
 import useHasMounted from "@/hooks/useHasMounted";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+
 import HeroSection from "./components/hero";
 import StorySection from "./components/story";
 import ValuesSection from "./components/values";

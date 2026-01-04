@@ -7,18 +7,30 @@ interface ContactCTAProps {
 export default function ContactCTA({ hasMounted }: ContactCTAProps) {
   return (
     <ClientMotion
-      initial={hasMounted ? { opacity: 0 } : false}
-      whileInView={hasMounted ? { opacity: 1 } : undefined}
+      initial={hasMounted ? { opacity: 0, y: 30 } : false}
+      whileInView={hasMounted ? { opacity: 1, y: 0 } : undefined}
       viewport={hasMounted ? { once: true } : undefined}
-      className="bg-red-600 text-white py-16"
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="relative overflow-hidden bg-linear-to-br from-red-600 via-red-500 to-red-900 text-white py-20"
     >
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-3xl font-bold mb-4">Have more questions?</h2>
-        <p className="text-lg mb-8 opacity-90">
+      {/* Decorative blur */}
+      <div className="absolute -top-24 -left-24 w-72 h-72 bg-white/10 rounded-full blur-3xl" />
+      <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-black/20 rounded-full blur-3xl" />
+
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 className="text-3xl sm:text-4xl font-extrabold mb-4 tracking-tight">
+          Have more questions?
+        </h2>
+
+        <p className="text-lg sm:text-xl mb-10 text-white/90">
           Our team is ready to help you anytime
         </p>
-        <button className="bg-white text-red-600 font-bold px-8 py-3 rounded-lg hover:bg-gray-100 transition inline-block">
+
+        <button className="group inline-flex items-center gap-2 cursor-pointer bg-white text-red-600 font-bold px-10 py-4 rounded-xl shadow-lg hover:bg-red-50 hover:shadow-2xl transition-all duration-300">
           Contact Us
+          <span className="transform transition-transform group-hover:translate-x-1">
+            →
+          </span>
         </button>
       </div>
     </ClientMotion>

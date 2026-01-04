@@ -12,19 +12,19 @@ export default function ContactInfoGrid({ hasMounted }: ContactInfoGridProps) {
       icon: FiMapPin,
       title: "Our Address",
       description: "Cairo, Egypt ",
-      color: "from-blue-500 to-blue-600",
+      color: "from-red-400 to-red-600",
     },
     {
       icon: FiPhone,
       title: "Phone",
       description: "+966 11 XXXX XXXX",
-      color: "from-purple-500 to-purple-600",
+      color: "from-pink-400 to-pink-600",
     },
     {
       icon: FiMail,
       title: "Email",
       description: "support@drivetest.com",
-      color: "from-orange-500 to-orange-600",
+      color: "from-orange-400 to-orange-600",
     },
   ];
 

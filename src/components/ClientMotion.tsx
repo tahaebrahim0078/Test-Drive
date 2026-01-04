@@ -11,11 +11,23 @@ export default function ClientMotion(props: motionDivProps) {
   const hasMounted = useHasMounted();
 
   // Destructure motion-specific props so they are not passed to plain div
-  const { initial, animate, whileInView, viewport, transition, ...rest } = props as any;
+  const { initial, animate, whileInView, viewport, transition, ...rest } =
+    props as any;
 
   if (!hasMounted) {
     return <div {...(rest as plainDivProps)} />;
   }
 
-  return <motion.div initial={initial} animate={animate} whileInView={whileInView} viewport={viewport} transition={transition} {...(rest as any)}>{props.children}</motion.div>;
+  return (
+    <motion.div
+      initial={initial}
+      animate={animate}
+      whileInView={whileInView}
+      viewport={viewport}
+      transition={transition}
+      {...(rest as any)}
+    >
+      {props.children}
+    </motion.div>
+  );
 }

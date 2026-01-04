@@ -45,7 +45,7 @@ export default function ContactForm({ submitted, onSubmit }: ContactFormProps) {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition"
+            className="w-full px-4 py-2 border text-gray-600 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition"
             placeholder="Enter your name"
             required
           />
@@ -60,7 +60,7 @@ export default function ContactForm({ submitted, onSubmit }: ContactFormProps) {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition"
+            className="w-full px-4 py-2 border text-gray-600 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition"
             placeholder="Enter your email"
             required
           />
@@ -75,7 +75,7 @@ export default function ContactForm({ submitted, onSubmit }: ContactFormProps) {
             name="subject"
             value={formData.subject}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition"
+            className="w-full px-4 py-2 border text-gray-600 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition"
             placeholder="Message subject"
             required
           />
@@ -90,7 +90,7 @@ export default function ContactForm({ submitted, onSubmit }: ContactFormProps) {
             value={formData.message}
             onChange={handleChange}
             rows={5}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition resize-none"
+            className="w-full px-4 py-2 border text-gray-600 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition resize-none"
             placeholder="Write your message"
             required
           ></textarea>
@@ -98,7 +98,7 @@ export default function ContactForm({ submitted, onSubmit }: ContactFormProps) {
 
         <button
           type="submit"
-          className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg transition flex items-center justify-center gap-2"
+          className="w-full bg-red-600 cursor-pointer hover:bg-red-700 text-white font-bold py-3 rounded-lg transition flex items-center justify-center gap-2"
         >
           <FiSend /> Send Message
         </button>

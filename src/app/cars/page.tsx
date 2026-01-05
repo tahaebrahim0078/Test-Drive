@@ -5,18 +5,19 @@ import CarCard from "@/components/CarCard";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FiFilter, FiSearch } from "react-icons/fi";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchCars } from "@/utils/api";
 import { Car, fetchCarParams } from "@/types/index";
 import PaginationButtons from "@/components/home_page_components/PaginationButtons";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import LoadingState from "@/components/sharedComponents/LoadingState";
 import ErrorState from "@/components/sharedComponents/ErrorState";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
-
 export default function CarsPage() {
   const router = useRouter();
-  const [page, setPage] = useState(1);
+  const searchParams = useSearchParams();
+  const initialPage = Number(searchParams.get("page")) || 1;
+  const [page, setPage] = useState(initialPage);
 
   const [filterOptions, setFilterOptions] = useState<fetchCarParams>({
     brand: "",
@@ -33,6 +34,7 @@ export default function CarsPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["cars", appliedFilters, page],
     queryFn: async () => await fetchCars({ ...appliedFilters, page }),
+    placeholderData: keepPreviousData, // keeps old data until fresh one is fetched and ready for use
     staleTime: 1000 * 60 * 30,
   });
 
@@ -87,7 +89,6 @@ export default function CarsPage() {
 
   return (
     <ProtectedRoute allowedRoles={["customer"]}>
-      
       <main>
         {/* Header */}
         <section className="bg-linear-to-r from-gray-50 to-gray-100 py-6">

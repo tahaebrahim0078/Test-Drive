@@ -1,6 +1,5 @@
 "use client";
 
-
 import Link from "next/link";
 import { useState } from "react";
 import { useParams } from "next/navigation";
@@ -34,11 +33,12 @@ export default function CarDetailPage() {
         .flatMap(([_, value]) => value?.data);
       return cachedCar.find((c) => c?._id === carId);
     },
+    staleTime: 1000 * 60 * 5,
   });
   console.log("Car Details", car);
   if (isLoading) return <LoadingState />;
   if (isError || !car) return <ErrorState message={"Car Not Found"} />;
-  console.log("Car Details", car);
+
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % car.images.length);
   };
@@ -51,7 +51,6 @@ export default function CarDetailPage() {
 
   return (
     <main>
-
       {/* Breadcrumb */}
       <div className="bg-gray-50 py-4 border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -78,7 +77,7 @@ export default function CarDetailPage() {
                   alt={car.brand}
                   priority={true}
                   loading="eager"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-cover"
                 />
 
                 {/* Navigation Buttons */}
@@ -142,7 +141,7 @@ export default function CarDetailPage() {
                 </h3>
                 <div className="space-y-2">
                   <p className="text-gray-700 font-semibold">
-                    {car.dealer?.name ?? "unknown dealer"}
+                    {car.dealer?.dealershipName ?? "unknown dealer"}
                   </p>
                   <p className="text-gray-600 flex items-center gap-2">
                     <FiMapPin size={16} />
@@ -213,40 +212,8 @@ export default function CarDetailPage() {
               </div>
             </ClientMotion>
           </div>
-
-          {/* Availability */}
-          {/* <motion.div
-            initial={hasMounted ? { opacity: 0, y: 20 } : false}
-            whileInView={hasMounted ? { opacity: 1, y: 0 } : undefined}
-            viewport={hasMounted ? { once: true } : undefined}
-          >
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              Available Slots
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {car.availability.map((day, dayIndex) => (
-                <div key={dayIndex} className="bg-gray-50 p-6 rounded-lg">
-                  <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <FiCalendar size={18} />
-                    {day.date}
-                  </h3>
-                  <div className="space-y-2">
-                    {day.slots.map((slot, slotIndex) => (
-                      <button
-                        key={slotIndex}
-                        className="w-full bg-white hover:bg-red-600 hover:text-white border border-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg transition"
-                      >
-                        {slot}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div> */}
         </div>
       </section>
-
     </main>
   );
 }

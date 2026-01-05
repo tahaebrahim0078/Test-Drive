@@ -15,16 +15,15 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     rating: 0,
-    review: ""
+    review: "",
   });
 
   const carInfo = {
     name: "Mercedes C-Class",
-    dealer: "Mercedes Central"
+    dealer: "Mercedes Central",
   };
 
   const handleSubmit = (rating: number, review: string) => {
-    console.log({ rating, review });
     setFormData({ rating, review });
     setSubmitted(true);
   };
@@ -42,23 +41,20 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
   return (
     <main>
       <Navbar />
-      
+
       <section className="py-12 bg-white">
         <div className="max-w-2xl mx-auto px-4">
           <BackButton />
-          
+
           <ReviewHeader hasMounted={hasMounted} />
-          
-          <CarInfoCard 
+
+          <CarInfoCard
             hasMounted={hasMounted}
             carName={carInfo.name}
             dealerName={carInfo.dealer}
           />
-          
-          <ReviewForm 
-            hasMounted={hasMounted}
-            onSubmit={handleSubmit}
-          />
+
+          <ReviewForm hasMounted={hasMounted} onSubmit={handleSubmit} />
         </div>
       </section>
 

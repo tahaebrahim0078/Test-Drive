@@ -85,8 +85,6 @@ export default function CarsPage() {
     return <LoadingState />;
   }
   if (error) return <ErrorState message={String(error)} />;
-  console.log(carsToRender);
-
   return (
     <ProtectedRoute allowedRoles={["customer"]}>
       <main>

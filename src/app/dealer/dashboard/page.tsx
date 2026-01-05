@@ -292,6 +292,7 @@ export default function DealerDashboard() {
                           year: editingCar.year ?? new Date().getFullYear(),
                           price: editingCar.price,
                           specs: editingCar.specs,
+                          features: editingCar.features,
                           images: editingCar.images ?? [],
                           isActive: editingCar.isActive ?? true,
                         }

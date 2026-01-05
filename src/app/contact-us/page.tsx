@@ -14,7 +14,6 @@ export default function ContactUs() {
   const [submitted, setSubmitted] = useState(false);
 
   const handleFormSubmit = (formData: any) => {
-    console.log("Form submitted:", formData);
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);
   };

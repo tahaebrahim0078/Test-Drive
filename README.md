@@ -1,10 +1,12 @@
-# DriveTest Platform - Frontend
+# Test Drive Web Application
 
-A modern, responsive Next.js web application for booking luxury car test drives. Built with TypeScript, Tailwind CSS, and Framer Motion for smooth animations.
+A frontend application for a car test-drive platform built with Next.js (App Router) and TypeScript. The codebase contains page routes for browsing cars, booking flows, authentication pages, dealer/customer UI components, and utilities for integrating with a backend API and Cloudinary for image uploads.
+
+---
 
 ## 🎯 Project Overview
 
-DriveTest is a comprehensive platform that allows customers to:
+Test Drive is a comprehensive platform that allows customers to:
 
 - Browse and search luxury vehicles
 - View detailed car specifications and features
@@ -12,53 +14,114 @@ DriveTest is a comprehensive platform that allows customers to:
 - Manage their bookings
 - Submit and view reviews
 
-## 🚀 Getting Started
+---
 
-### Prerequisites
+## 📝 Features
 
-- Node.js 16+
-- npm or yarn
+- ✅ Responsive design (Mobile, Tablet, Desktop)
+- ✅ Smooth animations with Framer Motion
+- ✅ Search and filter functionality
+- ✅ Multi-step booking process
 
-### Installation
+## 🧰 Tech Stack
+
+- Next.js (App Router)
+- React 19 + TypeScript
+- Tailwind CSS
+- React Query (@tanstack/react-query)
+- Axios
+- Framer Motion
+- Headless UI
+- React Icons
+- Cloudinary (client-side unsigned uploads)
+- ESLint, PostCSS
+
+---
+
+## 📁 Folder Structure (key parts)
+
+- `src/app/` — Next.js App Router pages (home, cars, booking, auth, dealer, customer, review)
+- `src/components/` — Reusable components (CarCard, Navbar, loadingState, errorState)
+- `src/utils/` — API helpers and utilities (`apiCall.ts`, `api.ts`)
+- `src/context/` — Auth context
+
+---
+
+## 🛠 Installation
+
+Prerequisites:
+
+- Node.js (18+ recommended)
+- npm (or yarn/pnpm)
+
+Commands:
 
 ```bash
-# Navigate to project directory
-cd testcar
+# clone
+git clone <repo-url>
+cd Test-Drive
 
-# Install dependencies
+# install dependencies
 npm install
+```
 
-# Run development server
+Create a `.env.local` file with the required environment variables (see below).
+
+---
+
+## ▶️ Running the Project
+
+Start development server:
+
+```bash
 npm run dev
 ```
 
-The application will start at `http://localhost:3000`
+Build for production and start:
 
-## 📁 Project Structure
+```bash
+npm run build
+npm run start
+```
+
+Run linter:
+
+```bash
+npm run lint
+```
+
+The app runs by default at `http://localhost:3000` in development.
+
+---
+
+## 📜 Available Scripts
+
+Defined in `package.json`:
+
+- `dev` — Run Next.js in development mode (`next dev`)
+- `build` — Create an optimized production build (`next build`)
+- `start` — Start the production server (`next start`)
+- `lint` — Run ESLint (`eslint`)
+
+---
+
+## 🔐 Environment Variables
+
+The application expects the following environment variables (observed in source files):
+
+- `NEXT_PUBLIC_API_URL` — Base URL for the backend API (used in `src/utils/apiCall.ts` and pages)
+- `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` — Your Cloudinary cloud name
+- `NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET` — Cloudinary unsigned upload preset used in `DealerCarForm`
+
+Example `.env.local`:
 
 ```
-src/
-├── app/
-│   ├── page.tsx                 # Home page
-│   ├── layout.tsx               # Root layout
-│   ├── globals.css              # Global styles
-│   ├── cars/
-│   │   ├── page.tsx             # Cars listing page
-│   │   └── [id]/
-│   │       └── page.tsx         # Car detail page
-│   ├── auth/
-│   │   ├── login/
-│   │   │   └── page.tsx         # Login page
-│   │   └── register/
-│   │       └── page.tsx         # Register page
-│   ├── booking/
-│   │   └── [id]/
-│   │       └── page.tsx         # Booking page
-└── components/
-    ├── Navbar.tsx               # Navigation bar
-    ├── Footer.tsx               # Footer
-    └── CarCard.tsx              # Car card component
+NEXT_PUBLIC_API_URL=https://api.example.com/
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your-cloud-name
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=your-upload-preset
 ```
+
+---
 
 ## 🎨 Design Features
 
@@ -68,80 +131,3 @@ src/
 - **Gray**: Various shades for text and backgrounds
 - **Orange**: `#F97316` (Secondary highlights)
 - **White**: Clean backgrounds
-
-### Components
-
-- **Navbar**: Responsive navigation with mobile menu
-- **Footer**: Company info, links, and social media
-- **CarCard**: Reusable component for displaying cars
-- **Motion**: Smooth animations with Framer Motion
-
-## 📄 Pages Implemented
-
-### Public Pages
-
-✅ **Home** (`/`) - Landing page with hero, features, testimonials, and CTA
-✅ **Browse Cars** (`/cars`) - Search and filter cars
-✅ **Car Details** (`/cars/[id]`) - Detailed car information with gallery
-✅ **Login** (`/auth/login`) - User authentication
-✅ **Register** (`/auth/register`) - New user registration
-✅ **Booking** (`/booking/[id]`) - Multi-step booking process
-
-## 🔧 Technologies Used
-
-- **Framework**: Next.js 16 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion
-- **Icons**: React Icons (Feather)
-
-## 🎬 Running the Project
-
-### Development Mode
-
-```bash
-npm run dev
-```
-
-### Build for Production
-
-```bash
-npm run build
-npm start
-```
-
-### Linting
-
-```bash
-npm run lint
-```
-
-## 📝 Features
-
-- ✅ Responsive design (Mobile, Tablet, Desktop)
-- ✅ Smooth animations with Framer Motion
-- ✅ Search and filter functionality
-- ✅ Multi-step booking process
-- ✅ Image gallery with carousel
-- ✅ Rating and reviews display
-- ✅ Form validation
-- ✅ Dark/Light mode ready
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-
-```bash
-npm install -g vercel
-vercel
-```
-
----
-
-**Happy coding! 🚗✨**
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

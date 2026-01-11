@@ -86,7 +86,7 @@ export default function CarPreview() {
                 {selectedCar.dealer?.dealershipName}
               </span>
 
-              <h1 className="text-5xl font-black text-gray-900 mt-4 leading-tight">
+              <h1 className="text-4xl font-black text-gray-900 mt-4 leading-tight">
                 <span className="block truncate max-w-[14ch]">
                   {selectedCar.brand.toUpperCase()}
                 </span>

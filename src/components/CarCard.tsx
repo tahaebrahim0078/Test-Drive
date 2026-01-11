@@ -36,10 +36,10 @@ export default function CarCard({
       <div className="p-6">
         <div className="flex justify-between items-start mb-2">
           <div>
-            <h3 className="text-[28px] font-bold text-red-600 uppercase tracking-widest mb-1">
+            <h3 className="text-[24px] font-bold text-red-600 uppercase tracking-widest mb-1">
               {brand}
             </h3>
-            <p className="text-lg font-bold text-gray-900 leading-tight">
+            <p className="text-md font-bold text-gray-900 leading-tight">
               {model.toLocaleUpperCase()}
             </p>
           </div>

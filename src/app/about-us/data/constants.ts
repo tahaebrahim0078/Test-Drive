@@ -32,7 +32,7 @@ export const team = [
   {
     name: "Mahmoud Mohamed",
     image:
-      "https://drive.google.com/file/d/1eC5oZgjmzMLYhgo7_u8CllixB98uzGbv/view?usp=sharing",
+      "https://res.cloudinary.com/dfok52azn/image/upload/v1768674428/IMG_20251030_151521_copy_acy1rp.png",
   },
   {
     name: "Taha Ibrahim",
@@ -42,16 +42,21 @@ export const team = [
   {
     name: "Mohamed Anwar",
     image:
-      "https://drive.google.com/file/d/1nWZrdSz1qhGRRrW-lr3j3xoZl-JSCIOu/view?usp=drive_link",
+      "https://res.cloudinary.com/dfok52azn/image/upload/v1768674402/mohamed_anwar_copy_m2fzw6.jpg",
   },
   {
     name: "Mahamed Ibrahim",
     image:
-      "https://drive.google.com/file/d/1JpeqGnCpOYJ5XQUVpJKU8ZBZjI1vTCjK/view?usp=drive_link",
+      "https://res.cloudinary.com/dfok52azn/image/upload/v1768674401/arab_mkal1b.jpg",
   },
   {
     name: "Manar Hussein",
     image:
-      "https://drive.google.com/file/d/17j4IPMA_XlWEmsuCeJ9hCLYmZaT_2hYG/view?usp=drive_link",
+      "https://res.cloudinary.com/dfok52azn/image/upload/v1768674403/manar_copy_uur9ls.jpg",
+  },
+  {
+    name: "Mahmoud Deabes",
+    image:
+      "https://res.cloudinary.com/dfok52azn/image/upload/v1768674402/de3bes_jktpnx.jpg",
   },
 ];

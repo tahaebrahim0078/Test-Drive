@@ -22,7 +22,7 @@ export default function Journey() {
 
         {/* The Journey Grid */}
         <div className="relative grid grid-cols-1 md:grid-cols-3 gap-12">
-          <div className="hidden md:block absolute top-1/4 left-0 w-full h-0.5 border-t-2 border-dashed border-gray-300 -z-0" />
+          <div className="hidden md:block absolute top-1/4 left-0 w-full h-0.5 border-t-2 border-dashed border-gray-300 z-0" />
 
           {journeySteps.map((step, index) => (
             <ClientMotion

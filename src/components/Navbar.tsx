@@ -67,13 +67,19 @@ export default function Navbar() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="w-9 h-9 rounded-xl bg-red-500 flex items-center justify-center group-hover:scale-105 transition">
-                <span className="text-white font-bold">D</span>
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="relative">
+                <div className="w-10 h-10 rounded-xl bg-linear-to-br from-red-500 via-red-600 to-orange-500 flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg shadow-red-200">
+                  <span className="text-white font-bold text-lg">D</span>
+                </div>
+                <div className="absolute inset-0 rounded-xl bg-linear-to-br from-orange-500 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm -z-10" />
               </div>
-              <span className="text-xl font-bold text-gray-900 tracking-tight">
-                DriveTest
-              </span>
+              <div className="flex flex-col leading-none">
+                <span className="text-2xl font-black bg-linear-to-r from-gray-900 via-red-600 to-gray-900 bg-clip-text text-transparent tracking-tighter">
+                  DMA
+                </span>
+                <span className="text-xs font-medium text-gray-500">DRIVE</span>
+              </div>
             </Link>
 
             {/* Desktop Links */}

@@ -14,7 +14,7 @@ export default function Footer() {
               <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-sm">D</span>
               </div>
-              <span className="text-xl font-bold">DriveTest</span>
+              <span className="text-xl font-bold">DMA</span>
             </div>
             <p className="text-gray-400 text-sm">
               The premier platform for booking test drives. Experience luxury

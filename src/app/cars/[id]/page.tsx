@@ -35,7 +35,6 @@ export default function CarDetailPage() {
     },
     staleTime: 1000 * 60 * 5,
   });
-  console.log("Car Details", car);
   if (isLoading) return <LoadingState />;
   if (isError || !car) return <ErrorState message={"Car Not Found"} />;
 
